@@ -1,0 +1,9 @@
+matplotlib
+numpy
+pandas
+scipy
+networkx
+cmake
+networkit
+pebble
+ssgetpy

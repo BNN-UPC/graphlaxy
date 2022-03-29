@@ -1,0 +1,6 @@
+#!/usr/bin/env python
+
+from GraphlaxyDataGen import Graphlaxy
+
+if __name__ == "__main__":
+    Graphlaxy()
