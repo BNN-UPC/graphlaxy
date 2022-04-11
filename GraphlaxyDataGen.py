@@ -7,13 +7,13 @@ class Graphlaxy(object):
 
     def __init__(self):
         parser = argparse.ArgumentParser(
-            description='Tool used to create synthetic graph datasets using \'Nash Bargin Scheme\' with \'Powell\' optimization.',
+            description='Tool used to create synthetic graph datasets using \'Nash Bargin Scheme\' optimization.',
             usage='''gdg <command> [<args>]
 
-The available commandas are:
-    optimization         Create a baseline dataset, and optimize the parameters.
+The available commands are:
+    optimization         Create a baseline dataset and optimize the parameters.
     generate    Using the fitted parameters generate a synthetic graph dataset.
-    plots       Generate plots showing different cheracteristics of the baseline, sampled and final datasets.
+    plots       Generate plots showing different characteristics of the baseline, sampled, and final datasets.
 ''')
         parser.add_argument('command', help='Subcommand to run')
         commands = {"optimization":self.optimization, "generate":self.generate, "plot": self.plot}
@@ -32,12 +32,12 @@ The available commandas are:
 The available subcommands are:
     baseline    Only creates the baseline dataset
     metrics     Calculate the metrics of a dataset
-    optimize    Use sampling and the Powell method with cooperative barganing to optimize the imput RMat parameters 
+    optimize    Use sampling and the Powell method with cooperative bargaining to optimize the input RMat parameters 
     plot        Some plots to show analyze the results
 
 *************************************
 To run the full optimization in steps:
-    First create the baseline dataset, then take the metrics and finnaly optimize the parameters.''')
+    First, create the baseline dataset, then take the metrics and finally optimize the parameters.''')
 
 
         parser.add_argument('subcommand', help='Subcommand to run')
@@ -105,16 +105,18 @@ To run the full optimization in steps:
                             choices= choices)
         parser.add_argument('-w', "--custom-weights", nargs = 8, metavar = "float", type = float,
                             help = "List of waights for the beta distributions.", 
-                            default= ( 3.8331274, 4.79046486, 1.84556744, 2.04468646, 0.82850673, 0.62839428, 0.6002481, 1.02055709))
+                            default= (2.490744994387892,2.6031189695165597,0.5401027713447459,0.32109300386782624,0.6878348939570403,0.4389166002041694,0.22515465777238508,0.8146717281526472))
         choices = ["custom", "initial"]
         parser.add_argument('-ws', "--weight-source", metavar = "str", type = str,
                             help = "Where to get the waights used for the plot from. Posible values: {}".format(choices), default= "custom",
                             choices= choices)
+        parser.add_argument('-n', "--name", metavar = "str", type = str,
+                            help = "Name of the params to use for the fitness_evolution.", default= None)
         
 
         args = parser.parse_args(sys.argv[2:])
         from processes.plot import plot
-        plot(args.folder, args.validation_metrics, args.sample_size, args.show_plots, args.format, args.output_folder, args.plot_selection, args.custom_weights, args.weight_source)
+        plot(args.folder, args.validation_metrics, args.sample_size, args.show_plots, args.format, args.output_folder, args.plot_selection, args.custom_weights, args.weight_source, args.name)
 
 
     def baseline(self):
@@ -156,14 +158,12 @@ To run the full optimization in steps:
         parser.add_argument('-f', "--folder", metavar = "str", type = str,
                             help = "Folder where the dataset is.", default= "../baseline_dataset")
         parser.add_argument('-g', "--grid-size", metavar = "int", type = int,
-                            help = "The number of rows and columns the grid has.", default=10)
-        parser.add_argument('-s', "--sample-size", metavar = "int", type = int,
-                            help = "The size of the sample to take in each step of the optimization.", default=1000)
+                            help = "The number of rows and columns the grid has.", default=15)
         
         args = parser.parse_args(sys.argv[3:])
 
         from processes.optimization import optimize
-        optimize(args.name, args.folder, args.grid_size, args.sample_size)
+        optimize(args.name, args.folder, args.grid_size)
 
 
 if __name__ == "__main__":

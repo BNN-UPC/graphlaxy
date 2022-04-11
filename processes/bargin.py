@@ -18,10 +18,8 @@ def gen_metric_grid(df, metrics, m):
 
     blocks = get_grid(m)
 
-    df["metric_bucket"] = list(zip(
-        pd.cut(df[metrics[0]], blocks[0], labels=list(range(m)), include_lowest =True), 
-        pd.cut(df[metrics[1]], blocks[1], labels=list(range(m)), include_lowest =True)
-    ))
+    df["metric_bucket_1"] = pd.cut(df[metrics[0]], blocks[0], labels=list(range(m)), include_lowest =True)
+    df["metric_bucket_2"] = pd.cut(df[metrics[1]], blocks[1], labels=list(range(m)), include_lowest =True)
 
 def interval_b(a):
     return ((1-a)/3, min(a, 1- a))
@@ -33,47 +31,17 @@ def interval_b_mean(a):
     a_maen = (a.right + a.left) /2
     return interval_b(a_maen)
     
-def interval_c_mean(a, b):
-    a_maen = (a.right + a.left) /2
-    b_maen = (b.right + b.left) /2
-    return interval_c(a_maen, b_maen)
 
-    
 def interval_b_left(a):
     return interval_b(a.left)
     
 def interval_b_right(a):
     return interval_b(a.right)
     
-def interval_c_left_left(a, b):
-    a_left = a.left
-    b_limits = interval_b_left(a)
-    b_left = max(b.left, b_limits[0])
-    return interval_c(a_left, b_left)
-    
-def interval_c_right_right(a, b):
-    a_right = a.right
-    b_limits = interval_b_right(a)
-    b_right = min(b.right, b_limits[1])
-    return interval_c(a_right, b_right)
-
-    
-def interval_c_left_right(a, b):
-    a_left = a.left
-    b_limits = interval_b_left(a)
-    b_right = min(b.right, b_limits[1])
-    return interval_c(a_left, b_right)
-
-    
-def interval_c_right_left(a, b):
-    a_right = a.right
-    b_limits = interval_b_right(a)
-    b_left = max(b.left, b_limits[0])
-    return interval_c(a_right, b_left)
 
 def gen_param_grid(df):
-    presition = 0.05
-    intervals = np.arange(0,1.01,presition)
+    presition = 0.01
+    intervals = np.arange(0,1.001,presition)
     df["NE"] = (df["N"] - np.floor(np.sqrt(df["E"] * 2))) / (df["E"] + 1)
     df["a_bucket"] = pd.cut(df["a"], intervals, include_lowest =True)
     df["b_bucket"] = pd.cut(df["b"], intervals, include_lowest =True)
@@ -101,7 +69,8 @@ def grid_bargin(df, M):
         gen_weights(df, params)
 
         total = df["weight"].sum()
-        bucket_prob = df.groupby("metric_bucket")["weight"].sum() / total
+        buckets = df[(df["metric_bucket_1"] != np.NaN)  & (df["metric_bucket_2"] != np.NaN)].groupby(["metric_bucket_1", "metric_bucket_2"])
+        bucket_prob = buckets["weight"].sum() / total
 
         bargin = - sum(np.log2( 1 + (M-1) * bucket_prob)) / M
         return bargin

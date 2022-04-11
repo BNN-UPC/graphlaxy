@@ -1,3 +1,4 @@
+from argparse import ArgumentError
 import random
 from statistics import mean
 import pandas as pd
@@ -43,6 +44,7 @@ def plot_clustering_density(df):
     plt.hist(df["clustering"], bins=20, density=True)
     index = np.arange(0,1, 0.1)
     plt.plot(index, uniform.pdf(index), label='Uniform')
+    plt.ylim(0,10)
     plt.legend()
     plt.xlabel("clustering")
     plt.ylabel("denisty")
@@ -53,6 +55,7 @@ def plot_dlog_density(df):
     plt.hist(df["density_log"], bins=20, density=True)
     index = np.arange(-5.5,0, 0.01)
     plt.plot(index, uniform.pdf(index, loc=-5.5, scale =5.5), label='Uniform')
+    plt.ylim(0,0.5)
     plt.legend()
     plt.xlabel("density_log")
     plt.ylabel("denisty")
@@ -167,6 +170,8 @@ def plot(
             df_val = pd.read_csv(validation_metrics)
             
         if "fitness_evolution" in plot_selection:
+            if name is None:
+                raise ArgumentError("Name must be supplied to plot fitness evolution")
             print("Loading optimized_parameters data...")
             params = pd.read_csv(Path(dataset_folder, "optimized_parameters.csv"))
 

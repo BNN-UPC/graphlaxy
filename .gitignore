@@ -133,3 +133,5 @@ nohup.out
 
 *.qdrep
 *.sqlite
+
+.vscode

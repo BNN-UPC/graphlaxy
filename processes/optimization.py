@@ -24,8 +24,7 @@ def store_params(dataset_folder, name, params, i = None):
 def optimize(
         name = 'result',
         dataset_folder = "../baseline_dataset",
-        grid_size = 10,
-        sample_size = 1000):
+        grid_size = 10):
 
     df_m = pd.read_csv(Path(dataset_folder, "dataset_metrics.csv"))
     df_d = pd.read_csv(Path(dataset_folder, "dataset_description.csv"))
