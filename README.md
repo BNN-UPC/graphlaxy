@@ -2,21 +2,21 @@
 
 ## About
 
-This is a tool used to create synthetic graph datasets with an even distribution over a set of metrics (or projection) using \'Nash Bargain Scheme\' with \'Powell\' optimization. It has a subcommand to generate the dataset with pre-trained parameters, a series of subcommands to train a new set of parameters, and subcommands to analyze the results (plots and statistics).
+This is a tool used to create synthetic graph datasets with an even distribution over a set of metrics (or projection) using \'Nash Bargain Scheme\'  optimization. It has a subcommand to generate the dataset with pre-trained parameters, a series of subcommands to train a new set of parameters, and subcommands to analyze the results (plots and statistics).
 
-The metrics this project uses are the mean clustering coefficient (also known as transitivity) and the logarithm of the density. These metrics are important for other studies of the investigation group, but the work can be extended to use other metrics.
+The metrics this project uses are the mean clustering coefficient (also known as transitivity) and the logarithm of the density. These metrics were selected because they are important for other studies of the investigation group, but the work can be extended to use other metrics.
 
-This tool is a command-line tool, this document, and the associated paper are all the documentation available for the moment.
+This document and the associated paper are all the documentation available at the moment.
 
 ## Motivation (from abstract)
 
-Graphs have been used to model a wide variety of problems. Yet to have robust conclusions it is important to have a dataset that explores the entire solution space. Although synthetic graphs can be used to augment available real graph datasets to overcome selection bias, the generation of unbiased synthetic datasets is complex with current tools. In this work, we propose a method to find a synthetic graph dataset that has an even representation of graphs with different metrics. The resulting dataset can then be used, among others, for benchmarking graph processing techniques as the accuracy of different Graph Neural Network (GNN) models or the speedups obtained by different graph processing acceleration frameworks.
+In general, to draw robust conclusions from a dataset, all the analyzed populations must be represented on said dataset. A dataset that does not fulfill this condition is normally referred to as selection bias. On the other hand, graphs have been used to model a wide variety of problems. Although synthetic graphs can be used to augment available real graph datasets to overcome selection bias, the generation of unbiased synthetic datasets is complex with current tools. In this work, we propose a method to find a synthetic graph dataset that has an even representation of graphs with different metrics. The resulting dataset can then be used, among others, for benchmarking graph processing techniques as the accuracy of different Graph Neural Network (GNN) models or the speedups obtained by different graph processing acceleration frameworks.
 
 ## Requirements and installation
 
 For the moment the only way to use the software is to download the repository, install the dependencies and run the command-line tool.
 
-This project has multiple dependencies. It uses the `networkit` package for the RMat implementation, `networkx` package to calculate the graph metrics, `scipy` package for the optimization problem, and `pebble` package (optional) to control the multiprocess characteristics. It also uses the `NumPy` and `pandas` packages. Not all dependencies are required to run all commands.
+This project has multiple dependencies. It uses the `networkit` package for the RMat implementation, `networkx` package to calculate the graph metrics, `scipy` package for the optimization problem, `matplotlib` for plots, and `pebble` package (optional) to control the multiprocess characteristics. It also uses the `numpy` and `pandas` packages. Not all dependencies are required to run all commands.
 
 The repository has a `requirements.txt` to install with a single command all the dependencies:
 ```
@@ -114,19 +114,19 @@ nohup sh -c 'python3 -u GalaxyDataGen.py optimization baseline -f <baseline_dir>
 ```
 
 
-The first step is to create the Baseline dataset, this will create the dataset and a 'csv' with the path to each of the graphs and the parameters that were used to generate them:
+The first step is to create the Baseline dataset, this will create the dataset and a `csv` with the path to each of the graphs and the parameters that were used to generate them:
 
 ```
 ./gdg optimization baseline -f <baseline_dir> [-m]
 ```
 
-The second step is to calculate the metrics for the baseline dataset. This will create a second 'csv' file with the metrics of each of the graphs:
+The second step is to calculate the metrics for the baseline dataset. This will create a second `csv` file with the metrics of each of the graphs:
 
 ```
 ./gdg optimization metrics -f <baseline_dir> [-m]
 ```
 
-The next step is to run the optimization. This will create yet another 'csv' file with the evolution of the parameters through the optimization process:
+The next step is to run the optimization. This will create yet another `csv` file with the evolution of the parameters through the optimization process:
 
 ```
 ./gdg  optimization optimize -f <baseline_dir> -n <ID>
@@ -144,7 +144,7 @@ And optionally, the metrics of the result dataset can be calculated (needed to g
 ./gdg optimization metrics -f <result_dir> [-m]
 ```
 
-For more details on the parameters use the '-h' option on each of the commands.
+For more details on the parameters use the `-h` option on each of the commands.
 
 ### Plots
 
@@ -156,12 +156,21 @@ The command to generate the plots is:
 ./gdg plot -f <dataset> -p <plot_id_1> <plot_id_2> ... [-sh]
 ```
 
-Each plot id will generate a different plot. the '-sh' option shows the plot instead of saving it to the filesystem.
+Each plot id will generate a different plot. the `-sh` option shows the plot instead of saving it to the filesystem.
 For example, to generate the result against the validation plot and show it, the command would be:
 
 ```
 ./gdg plot -f <result_dataset> -p validation -sh
 ```
+
+A plot example representing a sample of the result dataset compared to the validation dataset on a projection over the analyzed metrics:
+
+![validation plot](img/result/partial_validation.svg)
+
+
+## Validation dataset
+
+The validation dataset is not included, nor is the code used to download it. To download the dataset the package `ssgetpy` was used available [here](https://github.com/drdarshan/ssgetpy). This repository only includes a file with the metrics extracted from the dataset that is needed to generate the validation plot.
 
 
 
