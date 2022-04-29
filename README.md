@@ -39,11 +39,11 @@ This is probably the most common use case. If you only care to create a dataset 
 
 To create the dataset using default parameters run:
 ```
-python GraphlaxyDataGen.py -f <otput_folder> -s <dataset_size> -e <edge_size_min>,<edge_size_max> [-m]
+python GraphlaxyDataGen.py generate -f <otput_folder> -s <dataset_size> -e <edge_size_min>,<edge_size_max> [-m]
 ```
 or 
 ```
-./gdg -f <otput_folder> -s <dataset_size> -e <edge_size_min>,<edge_size_max> [-m]
+./gdg generate -f <otput_folder> -s <dataset_size> -e <edge_size_min>,<edge_size_max> [-m]
 ```
 
 The `-m` option indicates to use multiprocess, omit if wish to run on one process (will only use one core if not used).
