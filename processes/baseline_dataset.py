@@ -16,17 +16,17 @@ def generate_baseline(
         E = random.randint(edges_between[0],edges_between[1])
 
         n_0 = np.floor(np.sqrt(E * 2))
-        N_r = (n_0, E + 1)
-        N = int(np.floor(random.uniform(N_r[0],N_r[1])))
+        N = int(np.floor(random.uniform(n_0, E+1)))
 
         a = random.uniform(0.25, 1)
-        b = random.uniform((1-a)/3, min(a, 1-a))
-        c = random.uniform((1-a-b)/2, min(b, 1-a-b))
-        d = 1-a-b-c
+        d = random.uniform((1-a)/3,min(a,1-a))
+        bc = 1 - a - d
+
+        b = c = bc/2
 
         parameters.append({
             "i": i, "N": N, "E": E,
-            "a": a, "b": b, "c": c, "d": d
+            "a": a, "b": b, "c": c, "d": d, "bc": bc
         })
 
     if multiprocess:

@@ -13,10 +13,16 @@ class Graphlaxy(object):
 The available commands are:
     optimization         Create a baseline dataset and optimize the parameters.
     generate    Using the fitted parameters generate a synthetic graph dataset.
-    plots       Generate plots showing different characteristics of the baseline, sampled, and final datasets.
+    plots       Generate plots showing different characteristics of the baseline, sampled, and final datasets. 
+    statistics  Print some basic statistics of target dataset
 ''')
         parser.add_argument('command', help='Subcommand to run')
-        commands = {"optimization":self.optimization, "generate":self.generate, "plot": self.plot}
+        commands = {
+            "optimization":self.optimization, 
+            "generate":self.generate, 
+            "plots": self.plot,
+            "statistics": self.statistics
+        }
         args = parser.parse_args(sys.argv[1:2])
         if not args.command in commands:
             print('Unrecognized command')
@@ -32,8 +38,7 @@ The available commands are:
 The available subcommands are:
     baseline    Only creates the baseline dataset
     metrics     Calculate the metrics of a dataset
-    optimize    Use sampling and the Powell method with cooperative bargaining to optimize the input RMat parameters 
-    plot        Some plots to show analyze the results
+    optimize    Use sampling and the Powell method with cooperative bargaining to optimize the input RMat parameters
 
 *************************************
 To run the full optimization in steps:
@@ -45,8 +50,7 @@ To run the full optimization in steps:
         commands = {
             "baseline":self.baseline, 
             "metrics":self.metrics, 
-            "optimize": self.optimize, 
-            "plot": self.plot
+            "optimize": self.optimize
             }
         args = parser.parse_args(sys.argv[2:3])
         if not args.subcommand in commands:
@@ -83,6 +87,19 @@ To run the full optimization in steps:
         from processes.result_dataset import generate_result_dataset
 
         generate_result_dataset(args.from_file, args.custom_weights, args.parameters_file, args.name, args.folder, args.dataset_size, args.edges_between, args.multiprocess)
+
+
+    def statistics(self):
+        parser = argparse.ArgumentParser(description = "Calculate some statistics over a dataset.")
+        
+        parser.add_argument('-f', "--folder", metavar = "str", type = str,
+                            help = "Folder where the dataset to analize was generated.", default= "data/validation_dataset")
+        parser.add_argument('-s', "--sample-size", metavar = "int", type = int,
+                            help = "The size of the sample.", default= 1000)
+
+        args = parser.parse_args(sys.argv[2:])
+        from processes.statistics import statistics
+        statistics(args.folder, args.sample_size)
 
     def plot(self):
         parser = argparse.ArgumentParser(description = "Some plots to analyze the results.")

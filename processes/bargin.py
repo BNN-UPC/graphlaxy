@@ -44,17 +44,16 @@ def gen_param_grid(df):
     intervals = np.arange(0,1.001,presition)
     df["NE"] = (df["N"] - np.floor(np.sqrt(df["E"] * 2))) / (df["E"] + 1)
     df["a_bucket"] = pd.cut(df["a"], intervals, include_lowest =True)
-    df["b_bucket"] = pd.cut(df["b"], intervals, include_lowest =True)
-    df["c_bucket"] = pd.cut(df["c"], intervals, include_lowest =True)
+    df["d_bucket"] = pd.cut(df["d"], intervals, include_lowest =True)
     df["NE_bucket"] = pd.cut(df["NE"], intervals, include_lowest =True)
-    df["param_bucket_count"] = df.groupby(['a_bucket', 'b_bucket', 'NE_bucket'])[['a_bucket']].transform('count')
+    df["param_bucket_count"] = df.groupby(['a_bucket', 'd_bucket', 'NE_bucket'])[['a_bucket']].transform('count')
 
 
 def gen_weights(df, res):
-    alfa_a, beta_a, alfa_b, beta_b, alfa_c, beta_c, alfa_N, beta_N  = res
-    weights = df.apply(lambda row: beta_cdf_interval(row['a_bucket'],alfa_a, beta_a,(0.25, 1)) * 
-      beta_cdf_mean(row['b_bucket'],alfa_b, beta_b, interval_b_left(row['a_bucket']), interval_b_mean(row['a_bucket']), interval_b_right(row['a_bucket'])) *
-      beta_cdf_interval(row['NE_bucket'],alfa_N, beta_N, (0, 1)) / row["param_bucket_count"], 
+    alfa_a, beta_a, alfa_d, beta_d, alfa_N, beta_N  = res
+    weights = df.apply(lambda row: (beta_cdf_interval(row['a_bucket'],alfa_a, beta_a,(0.25, 1)) * 
+      beta_cdf_mean(row['d_bucket'],alfa_d, beta_d, interval_b_left(row['a_bucket']), interval_b_mean(row['a_bucket']), interval_b_right(row['a_bucket'])) *
+      beta_cdf_interval(row['NE_bucket'],alfa_N, beta_N, (0, 1))) / row["param_bucket_count"], 
       axis=1)
 
     weights[weights < 0] = 0

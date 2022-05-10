@@ -26,7 +26,7 @@ def generate_result_dataset(
 
     print(params)
 
-    alfa_a, beta_a, alfa_b, beta_b, alfa_c, beta_c, alfa_N, beta_N  = params
+    alfa_a, beta_a, alfa_d, beta_d, alfa_N, beta_N  = params
 
 
 
@@ -40,9 +40,9 @@ def generate_result_dataset(
         N = beta_rvs_discrete_shifted(alfa_N, beta_N, n_0, E + 1)
 
         a = beta_rvs_shifted(alfa_a, beta_a, 0.25, 1)
-        b = beta_rvs_shifted(alfa_b, beta_b, (1-a)/3, min(a, 1-a))
-        c = beta_rvs_shifted(alfa_c, beta_c, (1-a-b)/2, min(b, 1-a-b))
-        d = 1-a-b-c
+        d = beta_rvs_shifted(alfa_d, beta_d, (1-a)/3, min(a, 1-a))
+        bc = 1-a-d
+        b = c = bc/2
 
         parameters.append({
             "i": i, "N": N, "E": E,
