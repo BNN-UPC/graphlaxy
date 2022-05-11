@@ -19,14 +19,14 @@ def generate_baseline(
         N = int(np.floor(random.uniform(n_0, E+1)))
 
         a = random.uniform(0.25, 1)
-        d = random.uniform(max(1 - 3  * a, 0),min(a,1-a))
-        bc = 1 - a - d
-
-        b = c = bc/2
+        c = b = random.uniform(max(1 - 3  * a, 0),min(a,1-a))
+        d = 1 - a - b - c
+        #bc = 1 - a - d
+        #b = c = bc/2
 
         parameters.append({
             "i": i, "N": N, "E": E,
-            "a": a, "b": b, "c": c, "d": d, "bc": bc
+            "a": a, "b": b, "c": c, "d": d
         })
 
     if multiprocess:

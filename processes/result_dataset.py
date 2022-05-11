@@ -19,14 +19,14 @@ def generate_result_dataset(
     if from_file:
         df = pd.read_csv(param_file)
         params = df[df["name"] == name].iloc[-1][[
-                "alfa_a", "beta_a", "alfa_d", "beta_d", "alfa_N", "beta_N"
+                "alfa_a", "beta_a", "alfa_b", "beta_b", "alfa_N", "beta_N"
             ]]
     else:
         params = custom_weights
 
     print(params)
 
-    alfa_a, beta_a, alfa_d, beta_d, alfa_N, beta_N  = params
+    alfa_a, beta_a, alfa_b, beta_b, alfa_N, beta_N  = params
 
 
 
@@ -40,9 +40,10 @@ def generate_result_dataset(
         N = beta_rvs_discrete_shifted(alfa_N, beta_N, n_0, E + 1)
 
         a = beta_rvs_shifted(alfa_a, beta_a, 0.25, 1)
-        d = beta_rvs_shifted(alfa_d, beta_d, max(1 - 3  * a, 0), min(a, 1-a))
-        bc = 1-a-d
-        b = c = bc/2
+        b = c = beta_rvs_shifted(alfa_b, beta_b, max(1 - 3  * a, 0), min(a, 1-a))
+        d = 1 - a - b - c
+        #bc = 1-a-d
+        #b = c = bc/2
 
         parameters.append({
             "i": i, "N": N, "E": E,

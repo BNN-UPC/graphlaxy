@@ -67,12 +67,12 @@ To run the full optimization in steps:
         parser.add_argument('-s', "--dataset-size", metavar = "int", type = int,
                             help = "The size of the dataset to generate.", default= 5000)
         parser.add_argument('-e', "--edges-between", nargs = 2, metavar = "int", type = int,
-                            help = "The min and max vallue the edges argument can take.", default= (1000, 1000000))
+                            help = "The min and max vallue the edges argument can take.", default= (100000, 2000000))
         parser.add_argument('-m', '--multiprocess', action="store_true", help = "Add to take advantage of multiple cores.")
 
         parser.add_argument('-w', "--custom-weights", nargs = 8, metavar = "float", type = float,
                             help = "List of waights for the beta distributions.", 
-                            default= ( 2.490744994387892,2.6031189695165597,0.5401027713447459,0.32109300386782624,0.6878348939570403,0.4389166002041694,0.22515465777238508,0.8146717281526472))
+                            default= (1.3248478655922757,1.5089650653752031,0.5872691608423339,1.4899436857070154,0.14698869990820493,0.33680332568511046))
 
 
         
@@ -122,7 +122,7 @@ To run the full optimization in steps:
                             choices= choices)
         parser.add_argument('-w', "--custom-weights", nargs = 8, metavar = "float", type = float,
                             help = "List of waights for the beta distributions.", 
-                            default= (2.490744994387892,2.6031189695165597,0.5401027713447459,0.32109300386782624,0.6878348939570403,0.4389166002041694,0.22515465777238508,0.8146717281526472))
+                            default= (1.3248478655922757,1.5089650653752031,0.5872691608423339,1.4899436857070154,0.14698869990820493,0.33680332568511046))
         choices = ["custom", "initial"]
         parser.add_argument('-ws', "--weight-source", metavar = "str", type = str,
                             help = "Where to get the waights used for the plot from. Posible values: {}".format(choices), default= "custom",
@@ -144,7 +144,7 @@ To run the full optimization in steps:
         parser.add_argument('-s', "--dataset-size", metavar = "int", type = int,
                             help = "The size of the baseline dataset.", default= 10000)
         parser.add_argument('-e', "--edges-between", nargs = 2, metavar = "int", type = int,
-                            help = "The min and max vallue the edges argument can take.", default= (1000, 1000000))
+                            help = "The min and max vallue the edges argument can take.", default= (100000, 2000000))
         parser.add_argument('-m', '--multiprocess', action="store_true", help = "Add to take advantage of multiple cores.")
         
         args = parser.parse_args(sys.argv[3:])
