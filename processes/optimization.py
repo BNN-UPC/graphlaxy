@@ -12,12 +12,11 @@ def store_params(dataset_folder, name, params, i = None):
 
   print("{}: {}".format(name, params))
 
-  alfa_a, beta_a, alfa_b, beta_b, alfa_c, beta_c, alfa_N, beta_N = params
+  alfa_a, beta_a, alfa_d, beta_d, alfa_N, beta_N = params
   add_to_csv(Path(dataset_folder, "optimized_parameters.csv"),{
       'name': name, 'iteration': i,
       'alfa_a': alfa_a, 'beta_a': beta_a,
-      'alfa_b': alfa_b, 'beta_b': beta_b,
-      'alfa_c': alfa_c, 'beta_c': beta_c,
+      'alfa_d': alfa_d, 'beta_d': beta_d,
       'alfa_N': alfa_N, 'beta_N': beta_N,
   })
   
@@ -42,9 +41,9 @@ def optimize(
       store_params(dataset_folder, name, x, i)
       i += 1
 
-    initial_parameters = [1] * 8
+    initial_parameters = [1] * 6
     store_params(dataset_folder, name, initial_parameters, 0)
-    res = minimize(grid_bargin(df, M), [1] * 8, bounds=[(1e-32,15)] * 8,
+    res = minimize(grid_bargin(df, M), initial_parameters, bounds=[(1e-32,15)] * 6,
       callback = callback)
     print(res)
 
