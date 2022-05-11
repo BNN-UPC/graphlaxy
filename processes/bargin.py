@@ -22,7 +22,7 @@ def gen_metric_grid(df, metrics, m):
     df["metric_bucket_2"] = pd.cut(df[metrics[1]], blocks[1], labels=list(range(m)), include_lowest =True)
 
 def interval_b(a):
-    return (max(0,(1-3*a)), min(a, 1- a))
+    return (max(0,(1 - 2  * a)/2), min(a, 1- a))
 
 def interval_c(a,b):
     return ((1-a-b)/2, min(b, 1-a-b))
