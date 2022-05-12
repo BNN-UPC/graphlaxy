@@ -16,7 +16,7 @@ def store_params(dataset_folder, name, params, i = None):
   add_to_csv(Path(dataset_folder, "optimized_parameters.csv"),{
       'name': name, 'iteration': i,
       'alfa_a': alfa_a, 'beta_a': beta_a,
-      'alfa_d': alfa_d, 'beta_d': beta_d,
+      'alfa_b': alfa_d, 'beta_b': beta_d,
       'alfa_N': alfa_N, 'beta_N': beta_N,
   })
   

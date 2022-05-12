@@ -12,8 +12,7 @@ def rmat_to_file(N, E, a, b, c, d, dataset_folder, s):
   reduce = np.power(2, scale) - N
 
   factor = E/N
-  Graph = nk.generators.RmatGenerator(scale, factor, a, b, c, d, weighted = True, reduceNodes = reduce).generate()
-  Graph = nk.graphtools.toUnweighted(Graph)
+  Graph = nk.generators.RmatGenerator(scale, factor, a, b, c, d, reduceNodes = reduce).generate()
   Graph.removeSelfLoops()
   Graph = nk.components.ConnectedComponents(Graph).extractLargestConnectedComponent(Graph, compactGraph = True)
   out_filename = Path(dataset_folder,'graphs','RMAT_{}.txt'.format(s))
