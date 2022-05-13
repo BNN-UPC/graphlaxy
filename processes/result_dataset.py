@@ -43,10 +43,15 @@ def generate_result_dataset(
         b = c = beta_rvs_shifted(alfa_b, beta_b, max((1 - 2  * a)/2, 0), min(a, (1-a)/2))
         d = 1 - a - b - c
 
-        parameters.append({
+        
+        params = {
             "i": i, "N": N, "E": E,
             "a": a, "b": b, "c": c, "d": d
-        })
+        }
+
+        print("Queue params: ", params)
+
+        parameters.append(params)
     
     if multiprocess:
         from pebble import ProcessPool

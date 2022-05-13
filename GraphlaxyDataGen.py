@@ -67,7 +67,7 @@ To run the full optimization in steps:
         parser.add_argument('-s', "--dataset-size", metavar = "int", type = int,
                             help = "The size of the dataset to generate.", default= 5000)
         parser.add_argument('-e', "--edges-between", nargs = 2, metavar = "int", type = int,
-                            help = "The min and max vallue the edges argument can take.", default= (100000, 2000000))
+                            help = "The min and max vallue the edges argument can take.", default= (1000, 500000))
         parser.add_argument('-m', '--multiprocess', action="store_true", help = "Add to take advantage of multiple cores.")
 
         parser.add_argument('-w', "--custom-weights", nargs = 6, metavar = "float", type = float,
@@ -144,7 +144,7 @@ To run the full optimization in steps:
         parser.add_argument('-s', "--dataset-size", metavar = "int", type = int,
                             help = "The size of the baseline dataset.", default= 10000)
         parser.add_argument('-e', "--edges-between", nargs = 2, metavar = "int", type = int,
-                            help = "The min and max vallue the edges argument can take.", default= (100000, 2000000))
+                            help = "The min and max vallue the edges argument can take.", default=  (1000, 500000))
         parser.add_argument('-m', '--multiprocess', action="store_true", help = "Add to take advantage of multiple cores.")
         
         args = parser.parse_args(sys.argv[3:])
