@@ -16,7 +16,7 @@ def generate_baseline(
 
         E = random.randint(edges_between[0],edges_between[1])
         n_0 = np.floor(np.sqrt(E * 20))
-        N = int(np.floor(random.uniform(n_0, E+1)))
+        N = int(np.floor(random.uniform(n_0, E)))
 
 
         a = random.uniform(0.25, 1)

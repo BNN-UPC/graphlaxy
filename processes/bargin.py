@@ -4,7 +4,7 @@ import pandas as pd
 from utils.probability import beta_cdf_interval, beta_cdf_mean
 
 def get_grid(m=10,
-        limits = [(0,1),(-5.5,0)]):
+        limits = [(0,1),(-6,-1)]):
     
     block0 = np.linspace(limits[0][0], limits[0][1], m + 1)
     block1 = np.linspace(limits[1][0], limits[1][1], m + 1)
@@ -42,7 +42,7 @@ def interval_b_right(a):
 def gen_param_grid(df):
     presition = 0.01
     intervals = np.arange(0,1.001,presition)
-    df["NE"] = (df["N"] - np.floor(np.sqrt(df["E"] * 20))) / (df["E"] + 1)
+    df["NE"] = (df["N"] - np.floor(np.sqrt(df["E"] * 20))) / df["E"]
     df["a_bucket"] = pd.cut(df["a"], intervals, include_lowest =True)
     df["b_bucket"] = pd.cut(df["b"], intervals, include_lowest =True)
     df["NE_bucket"] = pd.cut(df["NE"], intervals, include_lowest =True)
