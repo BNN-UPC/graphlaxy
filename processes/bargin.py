@@ -40,7 +40,7 @@ def interval_b_right(a):
     
 
 def gen_param_grid(df):
-    precision = 0.05
+    precision = 0.01
     intervals = np.arange(0,1.001,precision)
     df["NE"] = (df["N"] - np.floor(np.sqrt(df["E"] * 20))) / df["E"]
     df["a_bucket"] = pd.cut(df["a"], intervals, include_lowest =True)
@@ -51,7 +51,7 @@ def gen_param_grid(df):
 
 def gen_weights(df, res):
     alfa_a, beta_a, alfa_b, beta_b, alfa_N, beta_N  = res
-    weights = df.apply(lambda row: (beta_cdf_interval(row['a_bucket'],alfa_a, beta_a,(0.33, 1)) * 
+    weights = df.apply(lambda row: (beta_cdf_interval(row['a_bucket'],alfa_a, beta_a,(1/3, 1)) * 
       beta_cdf_mean(row['b_bucket'],alfa_b, beta_b, interval_b_left(row['a_bucket']), interval_b_mean(row['a_bucket']), interval_b_right(row['a_bucket'])) *
       beta_cdf_interval(row['NE_bucket'],alfa_N, beta_N, (0, 1))) / row["param_bucket_count"], 
       axis=1)
