@@ -39,8 +39,8 @@ def generate_result_dataset(
         n_0 = np.floor(np.sqrt(E * 20))
         N = beta_rvs_discrete_shifted(alfa_N, beta_N, n_0, E)
 
-        a = beta_rvs_shifted(alfa_a, beta_a, 0.25, 1)
-        b = beta_rvs_shifted(alfa_b, beta_b, max((1 - 2  * a), 0), min(a, (1-a)))
+        a = beta_rvs_shifted(alfa_a, beta_a, 0.33, 1)
+        b = beta_rvs_shifted(alfa_b, beta_b, max(1 - 2  * a, 0), min(a, 1-a))
         c = 0
         d = 1 - a - b - c
 
