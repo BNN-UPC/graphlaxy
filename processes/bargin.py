@@ -40,8 +40,8 @@ def interval_b_right(a):
     
 
 def gen_param_grid(df):
-    presition = 0.01
-    intervals = np.arange(0,1.001,presition)
+    precision = 0.05
+    intervals = np.arange(0,1.001,precision)
     df["NE"] = (df["N"] - np.floor(np.sqrt(df["E"] * 20))) / df["E"]
     df["a_bucket"] = pd.cut(df["a"], intervals, include_lowest =True)
     df["b_bucket"] = pd.cut(df["b"], intervals, include_lowest =True)
