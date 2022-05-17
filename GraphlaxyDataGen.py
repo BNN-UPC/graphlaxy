@@ -128,7 +128,7 @@ To run the full optimization in steps:
                             help = "Where to get the waights used for the plot from. Posible values: {}".format(choices), default= "custom",
                             choices= choices)
         parser.add_argument('-n', "--name", metavar = "str", type = str,
-                            help = "Name of the params to use for the fitness_evolution.", default= None)
+                            help = "Name of the params to use for the fitness_evolution.", default= "result")
         
 
         args = parser.parse_args(sys.argv[2:])
