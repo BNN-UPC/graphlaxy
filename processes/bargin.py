@@ -22,7 +22,7 @@ def gen_metric_grid(df, metrics, m):
     df["metric_bucket_2"] = pd.cut(df[metrics[1]], blocks[1], labels=list(range(m)), include_lowest =True)
 
 def interval_b(a):
-    return (max(0,1 - 2  * a), min(a, 1-a))
+    return (max(0,(1 - 2  * a)/2), min(a, 1-a))
 
 def interval_c(a,b):
     return ((1-a-b)/2, min(b, 1-a-b))
@@ -51,7 +51,7 @@ def gen_param_grid(df):
 
 def gen_weights(df, res):
     alfa_a, beta_a, alfa_b, beta_b, alfa_N, beta_N  = res
-    weights = df.apply(lambda row: (beta_cdf_interval(row['a_bucket'],alfa_a, beta_a,(1/3, 1)) * 
+    weights = df.apply(lambda row: (beta_cdf_interval(row['a_bucket'],alfa_a, beta_a,(1/4, 1)) * 
       beta_cdf_mean(row['b_bucket'],alfa_b, beta_b, interval_b_left(row['a_bucket']), interval_b_mean(row['a_bucket']), interval_b_right(row['a_bucket'])) *
       beta_cdf_interval(row['NE_bucket'],alfa_N, beta_N, (0, 1))) / row["param_bucket_count"], 
       axis=1)

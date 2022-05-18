@@ -15,13 +15,13 @@ def generate_baseline(
     for i in range(0,dataset_size):
 
         E = random.randint(edges_between[0],edges_between[1])
-        n_0 = np.floor(np.sqrt(E * 2))
+        n_0 = np.floor(np.sqrt(E * 20))
         N = int(np.floor(random.uniform(n_0, E)))
 
 
-        a = random.uniform(1/3, 1)
-        b = random.uniform(max(1 - 2*a, 0),min(a,1-a))
-        c = 0
+        a = random.uniform(1/4, 1)
+        c = b = random.uniform(max((1 - 2*a)/2, 0),min(a,1-a))
+        #c = 0
         d = 1 - a - b - c
 
         params = {
@@ -41,7 +41,7 @@ def generate_baseline(
             for param in parameters:
                 future = pool.schedule(rmat_to_file, 
                     args=(param['N'],param['E'],param['a'],param['b'],param['c'],param['d'],dataset_folder, param['i']), 
-                    timeout=300)
+                    timeout=600)
                 future.add_done_callback(pebble_timeout_callback)
     else:
         for param in parameters:
