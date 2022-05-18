@@ -19,10 +19,15 @@ def generate_baseline(
         N = int(np.floor(random.uniform(n_0, E)))
 
 
-        a = random.uniform(1/4, 1)
-        c = b = random.uniform(max((1 - 2*a)/2, 0),min(a,(1-a)/2))
+        #a = random.uniform(1/4, 1)
+        #c = b = random.uniform(max((1 - 2*a)/2, 0),min(a,(1-a)/2))
         #c = 0
-        d = 1 - a - b - c
+        #d = 1 - a - b - c
+
+        a = random.uniform(0.25, 1)
+        b = random.uniform((1-a)/3, min(a, 1-a))
+        c = random.uniform((1-a-b)/2, min(b, 1-a-b))
+        d = 1-a-b-c
 
         params = {
             "i": i, "N": N, "E": E,
