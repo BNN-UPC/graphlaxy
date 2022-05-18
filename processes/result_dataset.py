@@ -40,7 +40,7 @@ def generate_result_dataset(
         N = beta_rvs_discrete_shifted(alfa_N, beta_N, n_0, E)
 
         a = beta_rvs_shifted(alfa_a, beta_a, 1/4, 1)
-        c = b = beta_rvs_shifted(alfa_b, beta_b, max((1 - 2  * a)/2, 0), min(a, 1-a))
+        c = b = beta_rvs_shifted(alfa_b, beta_b, max((1 - 2  * a)/2, 0), min(a, (1-a)/2))
         #c = 0
         d = 1 - a - b - c
 

@@ -20,7 +20,7 @@ def generate_baseline(
 
 
         a = random.uniform(1/4, 1)
-        c = b = random.uniform(max((1 - 2*a)/2, 0),min(a,1-a))
+        c = b = random.uniform(max((1 - 2*a)/2, 0),min(a,(1-a)/2))
         #c = 0
         d = 1 - a - b - c
 
