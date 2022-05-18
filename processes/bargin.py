@@ -26,7 +26,8 @@ def interval_b(a):
     #(max(0,(1 - 2  * a)/2), min(a, (1-a)/2))
 
 def interval_c(a,b):
-    return ((1-a-b)/2, min(b, 1-a-b))
+    return (max(0,1-2*a-b), min(a, 1-a-b))
+    #((1-a-b)/2, min(b, 1-a-b))
 
 def interval_b_mean(a):
     a_maen = (a.right + a.left) /2
