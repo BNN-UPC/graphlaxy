@@ -12,10 +12,10 @@ def rmat_to_file(N, E, a, b, c, d, dataset_folder, s):
   factor = E/N
   reduce = np.power(2, scale) - N
 
-  Graph = nk.generators.RmatGenerator(scale, factor, a, b, c, d, weighted = True, reduceNodes = reduce).generate()
-  Graph = nk.graph.Graph(Graph, False, False) # To undirected and unweigted
+  Graph = nk.generators.RmatGenerator(scale, factor, a, b, c, d, reduceNodes = reduce).generate()
+  #Graph = nk.graph.Graph(Graph, False, False) # To undirected and unweigted
   Graph.removeSelfLoops()
-  #Graph = nk.components.ConnectedComponents(Graph).extractLargestConnectedComponent(Graph, compactGraph = True)
+  Graph = nk.components.ConnectedComponents(Graph).extractLargestConnectedComponent(Graph, compactGraph = True)
   name = 'RMAT_{}.txt'.format(s)
   out_filename = Path(dataset_folder,'graphs',name)
   print("Wrinting to:" + str(out_filename))

@@ -36,7 +36,7 @@ def generate_result_dataset(
     for i in range(0,dataset_size):
         
         E = random.randint(edges_between[0], edges_between[1])
-        n_0 = np.floor(np.sqrt(E * 2))
+        n_0 = np.floor(np.sqrt(E * 20))
         N = beta_rvs_discrete_shifted(alfa_N, beta_N, n_0, E)
 
         a = beta_rvs_shifted(alfa_a, beta_a, 1/3, 1)

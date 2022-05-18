@@ -28,6 +28,7 @@ def optimize(
     df_m = pd.read_csv(Path(dataset_folder, "dataset_metrics.csv"))
     df_d = pd.read_csv(Path(dataset_folder, "dataset_description.csv"))
     df = pd.merge(df_m, df_d, on="name")
+    df[df["density_log"] < -1]
 
 
     m = grid_size
