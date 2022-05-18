@@ -22,7 +22,8 @@ def gen_metric_grid(df, metrics, m):
     df["metric_bucket_2"] = pd.cut(df[metrics[1]], blocks[1], labels=list(range(m)), include_lowest =True)
 
 def interval_b(a):
-    return (max(0,(1 - 2  * a)/2), min(a, (1-a)/2))
+    return (max(0,1-3*a), min(a, 1-a))
+    #(max(0,(1 - 2  * a)/2), min(a, (1-a)/2))
 
 def interval_c(a,b):
     return ((1-a-b)/2, min(b, 1-a-b))
@@ -40,7 +41,7 @@ def interval_b_right(a):
     
 
 def gen_param_grid(df):
-    precision = 0.02
+    precision = 0.01
     intervals = np.arange(0,1.001,precision)
     df["NE"] = (df["N"] - np.floor(np.sqrt(df["E"] * 20))) / df["E"]
     df["a_bucket"] = pd.cut(df["a"], intervals, include_lowest =True)
@@ -68,6 +69,7 @@ def grid_bargin(df, M):
         gen_weights(df, params)
 
         total = df["weight"].sum()
+        print(total)
         buckets = df[(df["metric_bucket_1"] != np.NaN)  & (df["metric_bucket_2"] != np.NaN)].groupby(["metric_bucket_1", "metric_bucket_2"])
         bucket_prob = buckets["weight"].sum() / total
 
