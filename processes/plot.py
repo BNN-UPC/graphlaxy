@@ -62,11 +62,12 @@ def plot_dlog_density(df):
     plt.ylabel("denisty")
 
 def plot_sample_paramdist(res):
-    alfa_a, beta_a, alfa_d, beta_d, alfa_N, beta_N  = res
+    alfa_a, beta_a, alfa_b, beta_b,alfa_c, beta_c, alfa_N, beta_N  = res
     plt.figure()
     index = np.arange(0,1, 0.01)
     plt.plot(index, beta.pdf(index,alfa_a, beta_a), label='a')
-    plt.plot(index, beta.pdf(index,alfa_d, beta_d), label='d')
+    plt.plot(index, beta.pdf(index,alfa_b, beta_b), label='b')
+    plt.plot(index, beta.pdf(index,alfa_c, beta_c), label='c')
     plt.plot(index, beta.pdf(index,alfa_N, beta_N), label='N')
     plt.legend()
 

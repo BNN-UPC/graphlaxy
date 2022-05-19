@@ -1,7 +1,7 @@
 import numpy as np
 import pandas as pd
 
-from utils.probability import beta_cdf_interval, beta_cdf_mean
+from utils.probability import beta_cdf_interval, beta_cdf_mean, beta_cdf_mean_2d
 
 def get_grid(m=10,
         limits = [(0,1),(-6,-1)]):
@@ -29,6 +29,26 @@ def interval_c(a,b):
     return (max(0,1-2*a-b), min(a, 1-a-b))
     #((1-a-b)/2, min(b, 1-a-b))
 
+
+def interval_c_mean(a, b):
+    a_maen = (a.right + a.left) /2
+    b_mean = (b.right + b.left) /2
+    return interval_c(a_maen, b_mean)
+
+def interval_c_leftleft(a,b):
+    return interval_c(a.left, b.left)
+    
+def interval_c_leftright(a,b):
+    return interval_c(a.left, b.right)
+
+    
+def interval_c_rightleft(a,b):
+    return interval_c(a.right, b.left)
+
+    
+def interval_c_rightright(a,b):
+    return interval_c(a.right, b.right)
+
 def interval_b_mean(a):
     a_maen = (a.right + a.left) /2
     return interval_b(a_maen)
@@ -42,19 +62,24 @@ def interval_b_right(a):
     
 
 def gen_param_grid(df):
-    precision = 0.01
+    precision = 0.05
     intervals = np.arange(0,1.001,precision)
     df["NE"] = (df["N"] - np.floor(np.sqrt(df["E"] * 20))) / df["E"]
     df["a_bucket"] = pd.cut(df["a"], intervals, include_lowest =True)
     df["b_bucket"] = pd.cut(df["b"], intervals, include_lowest =True)
+    df["c_bucket"] = pd.cut(df["c"], intervals, include_lowest =True)
     df["NE_bucket"] = pd.cut(df["NE"], intervals, include_lowest =True)
-    df["param_bucket_count"] = df.groupby(['a_bucket', 'b_bucket', 'NE_bucket'])[['a_bucket']].transform('count')
+    df["param_bucket_count"] = df.groupby(['a_bucket', 'b_bucket', 'c_bucket', 'NE_bucket'])[['a_bucket']].transform('count')
+    print(df["param_bucket_count"])
 
 
 def gen_weights(df, res):
-    alfa_a, beta_a, alfa_b, beta_b, alfa_N, beta_N  = res
+    alfa_a, beta_a, alfa_b, beta_b,alfa_c, beta_c, alfa_N, beta_N  = res
     weights = df.apply(lambda row: (beta_cdf_interval(row['a_bucket'],alfa_a, beta_a,(1/4, 1)) * 
       beta_cdf_mean(row['b_bucket'],alfa_b, beta_b, interval_b_left(row['a_bucket']), interval_b_mean(row['a_bucket']), interval_b_right(row['a_bucket'])) *
+      beta_cdf_mean_2d(row['c_bucket'],alfa_c, beta_c, interval_c_mean(row['a_bucket'], row['b_bucket']), 
+      interval_c_leftleft(row['a_bucket'], row['b_bucket']), interval_c_leftright(row['a_bucket'], row['b_bucket']),
+      interval_c_rightleft(row['a_bucket'], row['b_bucket']), interval_c_rightright(row['a_bucket'], row['b_bucket'])) *
       beta_cdf_interval(row['NE_bucket'],alfa_N, beta_N, (0, 1))) / row["param_bucket_count"], 
       axis=1)
 
