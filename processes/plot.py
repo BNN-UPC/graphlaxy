@@ -95,7 +95,7 @@ def plot_fitness_evolution(df, M, params, name):
     param_serie = params[params["name"].str.startswith("{}_".format(name))].copy()
     param_serie["iteration"] = param_serie["name"].str.extract("_(\d+)$").astype(int)
     param_serie["fitness"] = param_serie[
-        ["alfa_a", "beta_a", "alfa_b", "beta_b", "alfa_N", "beta_N"]
+        ["alfa_a", "beta_a", "alfa_b", "beta_b", "alfa_c", "beta_c", "alfa_N", "beta_N"]
     ].apply(lambda row: grid_bargin(df, M)(row), axis=1)
 
     ax = param_serie.plot("iteration", "fitness", marker="o")
@@ -120,7 +120,7 @@ def plot_validation(df, df_val):
     ax = df.plot.scatter("density_log","clustering", c="gray")
     df_val.plot.scatter("density_log","clustering", ax = ax)
     plt.xlabel("Dlog")
-    plt.xlim(-5.5,0.01)
+    plt.xlim(-6,0.01)
     plt.ylim(-0.01,1.01)
     df_val.apply(lambda row: annotate_df(row,ax), axis=1)
 

@@ -45,7 +45,7 @@ def optimize(
 
     initial_parameters = [1] * 8
     store_params(dataset_folder, name, initial_parameters, 0)
-    res = minimize(grid_bargin(df, M), initial_parameters, bounds=[(1e-32,100)] * 6,
+    res = minimize(grid_bargin(df, M), initial_parameters, bounds=[(1e-32,100)] * 8,
       callback = callback)
     print(res)
 

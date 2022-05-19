@@ -70,6 +70,7 @@ def gen_param_grid(df):
     df["c_bucket"] = pd.cut(df["c"], intervals, include_lowest =True)
     df["NE_bucket"] = pd.cut(df["NE"], intervals, include_lowest =True)
     df["param_bucket_count"] = df.groupby(['a_bucket', 'b_bucket', 'c_bucket', 'NE_bucket'])[['a_bucket']].transform('count')
+    df["param_bucket_count"] = df.groupby(['a_bucket', 'b_bucket', 'NE_bucket'])[['a_bucket']].transform('count')
     print(df["param_bucket_count"])
 
 
