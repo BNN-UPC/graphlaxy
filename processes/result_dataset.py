@@ -41,8 +41,7 @@ def generate_result_dataset(
 
         a = beta_rvs_shifted(alfa_a, beta_a, 1/4, 1)
         b = beta_rvs_shifted(alfa_b, beta_b, max(0,1-3*a), min(a, 1-a))
-        c = beta_rvs_shifted(alfa_c, beta_c, max(0,1-3*a), min(a, 1-a))
-        #c = random.uniform(max(0,1-2*a-b), min(a, 1-a-b))
+        c = beta_rvs_shifted(alfa_c, beta_c, max(0,1-2*a-b), min(a, 1-a-b))
         d = 1 - a - b - c
 
         
