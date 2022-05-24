@@ -72,7 +72,7 @@ To run the full optimization in steps:
 
         parser.add_argument('-w', "--custom-weights", nargs = 8, metavar = "float", type = float,
                             help = "List of waights for the beta distributions.", 
-                            default= (1,1,1,1,1,1,1,1))
+                            default= [1.3500523980958758,0.9756729865636893,1.4562248430720026,0.22767153268062393,1.055699069458428,0.9060404341929743,0.35052426603213255,1.157122011830607])
 
 
         
@@ -178,7 +178,7 @@ To run the full optimization in steps:
                             help = "The number of rows and columns the grid has.", default=15)
         parser.add_argument('-w', "--custom-weights", nargs = 8, metavar = "float", type = float,
                             help = "Initial weights for optimization.", 
-                            default= [1] * 8)
+                            default= [1.3500523980958758,0.9756729865636893,1.4562248430720026,0.22767153268062393,1.055699069458428,0.9060404341929743,0.35052426603213255,1.157122011830607])
         
         args = parser.parse_args(sys.argv[3:])
 

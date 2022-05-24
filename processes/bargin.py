@@ -23,11 +23,9 @@ def gen_metric_grid(df, metrics, m):
 
 def interval_b(a):
     return (max(0,1-3*a), min(a, 1-a))
-    #(max(0,(1 - 2  * a)/2), min(a, (1-a)/2))
 
 def interval_c(a,b):
     return (max(0,1-2*a-b), min(a, 1-a-b))
-    #((1-a-b)/2, min(b, 1-a-b))
 
 
 def interval_c_mean(a, b):
@@ -70,7 +68,6 @@ def gen_param_grid(df):
     df["c_bucket"] = pd.cut(df["c"], intervals, include_lowest =True)
     df["NE_bucket"] = pd.cut(df["NE"], intervals, include_lowest =True)
     df["param_bucket_count"] = df.groupby(['a_bucket', 'b_bucket', 'c_bucket', 'NE_bucket'])[['a_bucket']].transform('count')
-    print(df["param_bucket_count"])
 
 
 def gen_weights(df, res):

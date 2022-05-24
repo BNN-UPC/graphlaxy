@@ -20,21 +20,20 @@ def annotate_df(row, ax):
         color='darkslategrey')
 
 def plot_paramdensity(res, s):
-    alfa_a, beta_a, alfa_b, beta_b, alfa_N, beta_N = res
+    alfa_a, beta_a, alfa_b, beta_b, alfa_c, beta_c, alfa_N, beta_N = res
     param_list = []
     for _ in range(s):
         a = beta_rvs_shifted(alfa_a, beta_a, 1/3, 1)
-        print(a, max(0,1-2*a), min(a, 1-a))
-        b = beta_rvs_shifted(alfa_b, beta_b, max(0,1-2*a), min(a, 1-a))
-        #c = beta_rvs_shifted(alfa_c, beta_c, (1-a-b)/2, min(b, 1-a-b))
-        d = 1-a-b
-        params = {'a': a, 'b': b, 'd': d}
+        b = beta_rvs_shifted(alfa_b, beta_b, max(0,1-3*a), min(a, 1-a))
+        c = beta_rvs_shifted(alfa_c, beta_c, max(0,1-2*a-b), min(a, 1-a-b))
+        d = 1-a-b-c
+        params = {'a': a, 'b': b, 'c': c, 'd': d}
         param_list.append(params)
     df = pd.DataFrame(param_list)
     plt.figure()
-    plt.hist(df, bins=20, label=["a","b","d"], stacked=False, density=True)
-    plt.xlabel("parameter value")
-    plt.ylabel("probability density")
+    plt.hist(df, bins=20, label=["a","b", "c","d"], stacked=False, density=True)
+    plt.xlabel("value")
+    plt.ylabel("density")
     plt.legend()
     plt.xlim(-0,1)
     plt.ylim(0,20)
@@ -69,6 +68,8 @@ def plot_sample_paramdist(res):
     plt.plot(index, beta.pdf(index,alfa_b, beta_b), label='b')
     plt.plot(index, beta.pdf(index,alfa_c, beta_c), label='c')
     plt.plot(index, beta.pdf(index,alfa_N, beta_N), label='N')
+    plt.xlabel("value (before shifting and scaling)")
+    plt.ylabel("density")
     plt.legend()
 
 

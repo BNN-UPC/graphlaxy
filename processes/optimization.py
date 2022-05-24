@@ -46,7 +46,7 @@ def optimize(
 
     store_params(dataset_folder, name, custom_weights, 0)
     res = minimize(grid_bargin(df, M), custom_weights, bounds=[(1e-32,100)] * 8,
-      callback = callback)
+      tol = 1e-3, callback = callback)
     print(res)
 
     store_params(dataset_folder, name, res["x"])
