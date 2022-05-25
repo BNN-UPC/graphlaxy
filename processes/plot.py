@@ -133,7 +133,7 @@ def figure_print(show, folder, name, format):
 def plot(
     dataset_folder = "../baseline_dataset",
     validation_metrics = "../validation_dataset/dataset_metrics.csv",
-    samples = 1000,
+    samples = 0,
     show = True,
     format = 'svg',
     output_folder = "../plots/initial",
@@ -157,7 +157,7 @@ def plot(
         df_m = pd.read_csv(Path(dataset_folder, "dataset_metrics.csv"))
         df_d = pd.read_csv(Path(dataset_folder, "dataset_description.csv"))
         df_b = pd.merge(df_m, df_d, on="name")
-        df_b = df_b.head(samples)
+        df_b = df_b.sample(samples) if samples > 0 else df_b
         df_b["NE"] = df_b["N"] / df_b["E"]
         df_b["diff"] = df_b["a"] - df_b["d"]
 
