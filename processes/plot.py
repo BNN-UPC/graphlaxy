@@ -14,35 +14,35 @@ from .bargin import gen_param_grid, gen_weights, gen_metric_grid, grid_bargin, g
 
 def annotate_df(row, ax):
     ax.annotate(row["name"], row[["density_log","clustering"]],
-        xytext=(random.uniform(-10,10), random.uniform(-10,10)), 
+        xytext=(3, -2), 
         textcoords='offset points',
-        size=8, 
+        size=12, 
         color='darkslategrey')
 
 def plot_paramdensity(res, s):
-    alfa_a, beta_a, alfa_b, beta_b, alfa_c, beta_c, _, _  = res
+    alfa_a, beta_a, alfa_b, beta_b, alfa_c, beta_c, alfa_N, beta_N = res
     param_list = []
     for _ in range(s):
-        a = beta_rvs_shifted(alfa_a, beta_a, 0.25, 1)
-        b = beta_rvs_shifted(alfa_b, beta_b, (1-a)/3, min(a, 1-a))
-        c = beta_rvs_shifted(alfa_c, beta_c, (1-a-b)/2, min(b, 1-a-b))
+        a = beta_rvs_shifted(alfa_a, beta_a, 1/3, 1)
+        b = beta_rvs_shifted(alfa_b, beta_b, max(0,1-3*a), min(a, 1-a))
+        c = beta_rvs_shifted(alfa_c, beta_c, max(0,1-2*a-b), min(a, 1-a-b))
         d = 1-a-b-c
         params = {'a': a, 'b': b, 'c': c, 'd': d}
         param_list.append(params)
     df = pd.DataFrame(param_list)
     plt.figure()
-    plt.hist(df, bins=20, label=["a","b","c","d"], stacked=False, density=True)
-    plt.xlabel("parameter value")
-    plt.ylabel("probability density")
+    plt.hist(df, bins=20, label=["a","b", "c","d"], stacked=False, density=True)
+    plt.xlabel("value")
+    plt.ylabel("density")
     plt.legend()
     plt.xlim(-0,1)
-    plt.ylim(0,15)
+    plt.ylim(0,20)
 
 
 def plot_clustering_density(df):
     plt.figure()
     plt.hist(df["clustering"], bins=20, density=True)
-    index = np.arange(0,1, 0.1)
+    index = (0,1)
     plt.plot(index, uniform.pdf(index), label='Uniform')
     plt.ylim(0,10)
     plt.legend()
@@ -53,21 +53,23 @@ def plot_clustering_density(df):
 def plot_dlog_density(df):
     plt.figure()
     plt.hist(df["density_log"], bins=20, density=True)
-    index = np.arange(-5.5,0, 0.01)
+    index = (-5.5,0)
     plt.plot(index, uniform.pdf(index, loc=-5.5, scale =5.5), label='Uniform')
     plt.ylim(0,0.5)
     plt.legend()
-    plt.xlabel("density_log")
+    plt.xlabel("Dlog")
     plt.ylabel("denisty")
 
 def plot_sample_paramdist(res):
-    alfa_a, beta_a, alfa_b, beta_b, alfa_c, beta_c, alfa_N, beta_N  = res
+    alfa_a, beta_a, alfa_b, beta_b,alfa_c, beta_c, alfa_N, beta_N  = res
     plt.figure()
     index = np.arange(0,1, 0.01)
     plt.plot(index, beta.pdf(index,alfa_a, beta_a), label='a')
     plt.plot(index, beta.pdf(index,alfa_b, beta_b), label='b')
     plt.plot(index, beta.pdf(index,alfa_c, beta_c), label='c')
     plt.plot(index, beta.pdf(index,alfa_N, beta_N), label='N')
+    plt.xlabel("value (before shifting and scaling)")
+    plt.ylabel("density")
     plt.legend()
 
 
@@ -88,7 +90,7 @@ def plot_sample_params(df):
 def plot_param_clustering(df):
     df.plot.scatter("NE","diff", c="clustering", colormap='magma')
     plt.xlabel("N / E")
-    plt.ylabel("d - a")
+    plt.ylabel("a - d")
 
 def plot_fitness_evolution(df, M, params, name):
     param_serie = params[params["name"].str.startswith("{}_".format(name))].copy()
@@ -118,7 +120,8 @@ def plot_param_dlog(df):
 def plot_validation(df, df_val):
     ax = df.plot.scatter("density_log","clustering", c="gray")
     df_val.plot.scatter("density_log","clustering", ax = ax)
-    plt.xlim(-5.5,0.01)
+    plt.xlabel("Dlog")
+    plt.xlim(-6,0.01)
     plt.ylim(-0.01,1.01)
     df_val.apply(lambda row: annotate_df(row,ax), axis=1)
 
@@ -130,7 +133,7 @@ def figure_print(show, folder, name, format):
 def plot(
     dataset_folder = "../baseline_dataset",
     validation_metrics = "../validation_dataset/dataset_metrics.csv",
-    samples = 1000,
+    samples = 0,
     show = True,
     format = 'svg',
     output_folder = "../plots/initial",
@@ -140,19 +143,21 @@ def plot(
     name = "r10"
     ):
 
-    
+    plt.rcParams.update({'font.size': 22})
+
     if weight_source == "custom":
         weights = custom_weights
     elif weight_source == "initial":
         weights = [1] * 8
 
     print("Will plot:", plot_selection)
-    if set(["sample_grid", "sample_param", "validation", "dlog_density", "clustering_density", "fitness_evolution"]) & set(plot_selection):
+    if set(["sample_grid", "sample_param", "validation", "dlog_density", "clustering_density",
+        "fitness_evolution", "param_clustering", "param_dlog"]) & set(plot_selection):
         print("Loading Dataset...")
         df_m = pd.read_csv(Path(dataset_folder, "dataset_metrics.csv"))
         df_d = pd.read_csv(Path(dataset_folder, "dataset_description.csv"))
         df_b = pd.merge(df_m, df_d, on="name")
-        df_b = df_b.head(samples)
+        df_b = df_b.sample(samples) if samples > 0 else df_b
         df_b["NE"] = df_b["N"] / df_b["E"]
         df_b["diff"] = df_b["a"] - df_b["d"]
 

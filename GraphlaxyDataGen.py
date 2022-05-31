@@ -13,10 +13,16 @@ class Graphlaxy(object):
 The available commands are:
     optimization         Create a baseline dataset and optimize the parameters.
     generate    Using the fitted parameters generate a synthetic graph dataset.
-    plots       Generate plots showing different characteristics of the baseline, sampled, and final datasets.
+    plots       Generate plots showing different characteristics of the baseline, sampled, and final datasets. 
+    statistics  Print some basic statistics of target dataset
 ''')
         parser.add_argument('command', help='Subcommand to run')
-        commands = {"optimization":self.optimization, "generate":self.generate, "plot": self.plot}
+        commands = {
+            "optimization":self.optimization, 
+            "generate":self.generate, 
+            "plots": self.plot,
+            "statistics": self.statistics
+        }
         args = parser.parse_args(sys.argv[1:2])
         if not args.command in commands:
             print('Unrecognized command')
@@ -32,8 +38,7 @@ The available commands are:
 The available subcommands are:
     baseline    Only creates the baseline dataset
     metrics     Calculate the metrics of a dataset
-    optimize    Use sampling and the Powell method with cooperative bargaining to optimize the input RMat parameters 
-    plot        Some plots to show analyze the results
+    optimize    Use sampling and the Powell method with cooperative bargaining to optimize the input RMat parameters
 
 *************************************
 To run the full optimization in steps:
@@ -45,8 +50,7 @@ To run the full optimization in steps:
         commands = {
             "baseline":self.baseline, 
             "metrics":self.metrics, 
-            "optimize": self.optimize, 
-            "plot": self.plot
+            "optimize": self.optimize
             }
         args = parser.parse_args(sys.argv[2:3])
         if not args.subcommand in commands:
@@ -63,12 +67,12 @@ To run the full optimization in steps:
         parser.add_argument('-s', "--dataset-size", metavar = "int", type = int,
                             help = "The size of the dataset to generate.", default= 5000)
         parser.add_argument('-e', "--edges-between", nargs = 2, metavar = "int", type = int,
-                            help = "The min and max vallue the edges argument can take.", default= (1000, 1000000))
+                            help = "The min and max vallue the edges argument can take.", default= (100000, 2000000))
         parser.add_argument('-m', '--multiprocess', action="store_true", help = "Add to take advantage of multiple cores.")
 
         parser.add_argument('-w', "--custom-weights", nargs = 8, metavar = "float", type = float,
                             help = "List of waights for the beta distributions.", 
-                            default= ( 2.490744994387892,2.6031189695165597,0.5401027713447459,0.32109300386782624,0.6878348939570403,0.4389166002041694,0.22515465777238508,0.8146717281526472))
+                            default= [1.3500523980958758,0.9756729865636893,1.4562248430720026,0.22767153268062393,1.055699069458428,0.9060404341929743,0.35052426603213255,1.157122011830607])
 
 
         
@@ -83,6 +87,19 @@ To run the full optimization in steps:
         from processes.result_dataset import generate_result_dataset
 
         generate_result_dataset(args.from_file, args.custom_weights, args.parameters_file, args.name, args.folder, args.dataset_size, args.edges_between, args.multiprocess)
+
+
+    def statistics(self):
+        parser = argparse.ArgumentParser(description = "Calculate some statistics over a dataset.")
+        
+        parser.add_argument('-f', "--folder", metavar = "str", type = str,
+                            help = "Folder where the dataset to analize was generated.", default= "data/validation_dataset")
+        parser.add_argument('-s', "--sample-size", metavar = "int", type = int,
+                            help = "The size of the sample.", default= 1000)
+
+        args = parser.parse_args(sys.argv[2:])
+        from processes.statistics import statistics
+        statistics(args.folder, args.sample_size)
 
     def plot(self):
         parser = argparse.ArgumentParser(description = "Some plots to analyze the results.")
@@ -105,13 +122,13 @@ To run the full optimization in steps:
                             choices= choices)
         parser.add_argument('-w', "--custom-weights", nargs = 8, metavar = "float", type = float,
                             help = "List of waights for the beta distributions.", 
-                            default= (2.490744994387892,2.6031189695165597,0.5401027713447459,0.32109300386782624,0.6878348939570403,0.4389166002041694,0.22515465777238508,0.8146717281526472))
+                            default= ((1,1,1,1,1,1,1,1)))
         choices = ["custom", "initial"]
         parser.add_argument('-ws', "--weight-source", metavar = "str", type = str,
                             help = "Where to get the waights used for the plot from. Posible values: {}".format(choices), default= "custom",
                             choices= choices)
         parser.add_argument('-n', "--name", metavar = "str", type = str,
-                            help = "Name of the params to use for the fitness_evolution.", default= None)
+                            help = "Name of the params to use for the fitness_evolution.", default= "result")
         
 
         args = parser.parse_args(sys.argv[2:])
@@ -127,7 +144,7 @@ To run the full optimization in steps:
         parser.add_argument('-s', "--dataset-size", metavar = "int", type = int,
                             help = "The size of the baseline dataset.", default= 10000)
         parser.add_argument('-e', "--edges-between", nargs = 2, metavar = "int", type = int,
-                            help = "The min and max vallue the edges argument can take.", default= (1000, 1000000))
+                            help = "The min and max vallue the edges argument can take.", default= (100000, 2000000))
         parser.add_argument('-m', '--multiprocess', action="store_true", help = "Add to take advantage of multiple cores.")
         
         args = parser.parse_args(sys.argv[3:])
@@ -159,11 +176,14 @@ To run the full optimization in steps:
                             help = "Folder where the dataset is.", default= "../baseline_dataset")
         parser.add_argument('-g', "--grid-size", metavar = "int", type = int,
                             help = "The number of rows and columns the grid has.", default=15)
+        parser.add_argument('-w', "--custom-weights", nargs = 8, metavar = "float", type = float,
+                            help = "Initial weights for optimization.", 
+                            default= [1.3500523980958758,0.9756729865636893,1.4562248430720026,0.22767153268062393,1.055699069458428,0.9060404341929743,0.35052426603213255,1.157122011830607])
         
         args = parser.parse_args(sys.argv[3:])
 
         from processes.optimization import optimize
-        optimize(args.name, args.folder, args.grid_size)
+        optimize(args.name, args.folder, args.grid_size, args.custom_weights)
 
 
 if __name__ == "__main__":

@@ -189,9 +189,15 @@ This work was done by the Barcelona Neural Network group (BNN) and is part of a 
 
 ## Citing
 
-This repository is associated with a Paper. If you are using it for a study, please cite.
+This repository is associated with the paper ["Bias Reduction via Cooperative Bargaining in Synthetic Graph Dataset Generation"](https://arxiv.org/abs/2205.13901). If you are using it for a study, please cite. 
 
-The citation text and BibTex will be available once the paper is published.
+```
+@inproceedings{Wassington2022BiasRV,
+  title={Bias Reduction via Cooperative Bargaining in Synthetic Graph Dataset Generation},
+  author={Axel Wassington and S. Abadal},
+  year={2022}
+}
+```
 
 
 ## License

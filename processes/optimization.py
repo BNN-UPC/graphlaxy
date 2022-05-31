@@ -24,11 +24,13 @@ def store_params(dataset_folder, name, params, i = None):
 def optimize(
         name = 'result',
         dataset_folder = "../baseline_dataset",
-        grid_size = 10):
+        grid_size = 10,
+        custom_weights = [1] * 8):
 
     df_m = pd.read_csv(Path(dataset_folder, "dataset_metrics.csv"))
     df_d = pd.read_csv(Path(dataset_folder, "dataset_description.csv"))
     df = pd.merge(df_m, df_d, on="name")
+    df[df["density_log"] < -1]
 
 
     m = grid_size
@@ -42,10 +44,9 @@ def optimize(
       store_params(dataset_folder, name, x, i)
       i += 1
 
-    initial_parameters = [1] * 8
-    store_params(dataset_folder, name, initial_parameters, 0)
-    res = minimize(grid_bargin(df, M), [1] * 8, bounds=[(1e-32,15)] * 8,
-      callback = callback)
+    store_params(dataset_folder, name, custom_weights, 0)
+    res = minimize(grid_bargin(df, M), custom_weights, bounds=[(1e-32,100)] * 8,
+      tol = 1e-3, callback = callback)
     print(res)
 
     store_params(dataset_folder, name, res["x"])

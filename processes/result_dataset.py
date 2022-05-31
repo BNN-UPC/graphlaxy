@@ -36,18 +36,23 @@ def generate_result_dataset(
     for i in range(0,dataset_size):
         
         E = random.randint(edges_between[0], edges_between[1])
-        n_0 = np.floor(np.sqrt(E * 2))
-        N = beta_rvs_discrete_shifted(alfa_N, beta_N, n_0, E + 1)
+        n_0 = np.floor(np.sqrt(E * 20))
+        N = beta_rvs_discrete_shifted(alfa_N, beta_N, n_0, E)
 
-        a = beta_rvs_shifted(alfa_a, beta_a, 0.25, 1)
-        b = beta_rvs_shifted(alfa_b, beta_b, (1-a)/3, min(a, 1-a))
-        c = beta_rvs_shifted(alfa_c, beta_c, (1-a-b)/2, min(b, 1-a-b))
-        d = 1-a-b-c
+        a = beta_rvs_shifted(alfa_a, beta_a, 1/4, 1)
+        b = beta_rvs_shifted(alfa_b, beta_b, max(0,1-3*a), min(a, 1-a))
+        c = beta_rvs_shifted(alfa_c, beta_c, max(0,1-2*a-b), min(a, 1-a-b))
+        d = 1 - a - b - c
 
-        parameters.append({
+        
+        params = {
             "i": i, "N": N, "E": E,
             "a": a, "b": b, "c": c, "d": d
-        })
+        }
+
+        print("Queue params: ", params)
+
+        parameters.append(params)
     
     if multiprocess:
         from pebble import ProcessPool

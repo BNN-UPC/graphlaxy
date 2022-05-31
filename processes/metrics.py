@@ -16,9 +16,9 @@ def _metrics(dataset_folder, row, trials):
     c = row['c']
     d = 1 - a - b - c
     
-    G = read_graph(row['name'])
-    Gcc = max(nx.connected_components(G), key=len)
-    G = G.subgraph(Gcc)
+    G = read_graph(Path(dataset_folder,"graphs", row['name']))
+    #Gcc = max(nx.connected_components(G), key=len)
+    #G = G.subgraph(Gcc)
 
     density = nx.density(G)
     clustering = nx.algorithms.approximation.clustering_coefficient.average_clustering(G,trials)
