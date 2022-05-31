@@ -16,12 +16,13 @@ def rmat_to_file(N, E, a, b, c, d, dataset_folder, s):
   Graph = nk.graph.Graph(Graph, False, False) # To undirected and unweigted
   Graph.removeSelfLoops()
   Graph = nk.components.ConnectedComponents(Graph).extractLargestConnectedComponent(Graph, compactGraph = True)
-  name = 'RMAT_{}.txt'.format(s)
-  out_filename = Path(dataset_folder,'graphs',name)
-  print("Wrinting to:" + str(out_filename))
-  nk.writeGraph(Graph, str(out_filename), nk.Format.EdgeListTabOne)
-  with lock:
-    add_to_csv(Path(dataset_folder,"dataset_description.csv"), {
-      'N': N, 'E':E, 'a': a, 'b': b, 'c': c, 'd': d, 'name': name, 'scale': scale, 'factor': factor, 'reduce': reduce
-    })
+  if Graph.numberOfEdges() > 100:
+    name = 'RMAT_{}.txt'.format(s)
+    out_filename = Path(dataset_folder,'graphs',name)
+    print("Wrinting to:" + str(out_filename))
+    nk.writeGraph(Graph, str(out_filename), nk.Format.EdgeListTabOne)
+    with lock:
+      add_to_csv(Path(dataset_folder,"dataset_description.csv"), {
+        'N': N, 'E':E, 'a': a, 'b': b, 'c': c, 'd': d, 'name': name, 'scale': scale, 'factor': factor, 'reduce': reduce
+      })
   return s
