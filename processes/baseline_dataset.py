@@ -2,6 +2,7 @@ import random
 import numpy as np
 from pathlib import Path
 from utils.rmat import rmat_to_file
+from scipy.stats import dirichlet
 
 def generate_baseline(
     dataset_folder = "../baseline_dataset", 
@@ -18,10 +19,7 @@ def generate_baseline(
         n_0 = np.floor(np.sqrt(E * 20))
         N = int(np.floor(random.uniform(n_0, E)))
 
-        a = random.uniform(0.25, 1)
-        b = random.uniform(max(0,1-3*a), min(a, 1-a))
-        c = random.uniform(max(0,1-2*a-b), min(a, 1-a-b))
-        d = 1-a-b-c
+        a,b,c,d = dirichlet.rvs((1, 1 ,1, 1))[0]
 
         params = {
             "i": i, "N": N, "E": E,
