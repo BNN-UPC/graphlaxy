@@ -26,7 +26,8 @@ def optimize(
         name = 'result',
         dataset_folder = "../baseline_dataset",
         grid_size = 10,
-        custom_weights = [2] * 6):
+        precision = 0.05,
+        custom_weights = None):
 
     df_m = pd.read_csv(Path(dataset_folder, "dataset_metrics.csv"))
     df_d = pd.read_csv(Path(dataset_folder, "dataset_description.csv"))
@@ -37,20 +38,32 @@ def optimize(
     m = grid_size
     M = m * m
     gen_metric_grid(df, ["clustering", "density_log"], m)
-    gen_param_grid(df)
+    gen_param_grid(df, precision)
 
     i = 1
-    def callback(x, f, acc):
+    def callback(x):#, f, acc):
       nonlocal i
       print(x)#,f ,acc)
       #if acc:
       store_params(dataset_folder, name, x, i,None)
       i += 1
 
+    if custom_weights == None:
+      f_min = 0
+      for i in range(100):
+        custom_weights_i = np.random.rand(6) * 5
+        f = grid_bargin(df, M)(custom_weights_i)
+        if f < f_min:
+          f_min = f
+          custom_weights  = custom_weights_i
+          print(custom_weights, f)
+
     store_params(dataset_folder, name, custom_weights, 0)
+
     #res = basinhopping(grid_bargin(df, M), custom_weights, callback = callback, stepsize=5
     #                  , interval=5, niter=1000, T = 0.1, minimizer_kwargs={"method":"COBYLA","options":{"maxiter":50, "disp":True, "eps": 1e-2}})
-    res = minimize(grid_bargin(df, M), custom_weights, method="COBYLA", tol= 1e-2, options={"disp":True}) # "eps": 1e-2
+    res = minimize(grid_bargin(df, M), custom_weights, method="COBYLA",callback = callback, tol= 1e-4, options={"disp":True}) # "eps": 1e-2
+    #res = minimize(grid_bargin(df, M), custom_weights, method="Powell",callback = callback, tol= 1e-4, options={"disp":True})
     print(res)
 
     store_params(dataset_folder, name, res["x"])
