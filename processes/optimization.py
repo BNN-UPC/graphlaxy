@@ -15,9 +15,6 @@ def store_params(dataset_folder, name, params, i = None, f = None):
   alfa_a,alfa_b, alfa_c, alfa_d, alfa_N, beta_N = params
   add_to_csv(Path(dataset_folder, "optimized_parameters.csv"),{
       'name': name, 'iteration': i,
-   #   'alfa_a': alfa_a, 'beta_a': beta_a,
-   #   'alfa_b': alfa_b, 'beta_b': beta_b,
-   #   'alfa_c': alfa_c, 'beta_c': beta_c,
      'alfa_a': alfa_a, 'alfa_b': alfa_b,'alfa_c': alfa_c,'alfa_d': alfa_d,
       'alfa_N': alfa_N, 'beta_N': beta_N, 'f': f
   })
@@ -40,17 +37,14 @@ def optimize(
     gen_param_grid(df)
 
     i = 1
-    def callback(x, f, acc):
+    def callback(x):
       nonlocal i
-      print(x)#,f ,acc)
-      #if acc:
+      print(x)
       store_params(dataset_folder, name, x, i,None)
       i += 1
 
     store_params(dataset_folder, name, custom_weights, 0)
-    #res = basinhopping(grid_bargin(df, M), custom_weights, callback = callback, stepsize=5
-    #                  , interval=5, niter=1000, T = 0.1, minimizer_kwargs={"method":"COBYLA","options":{"maxiter":50, "disp":True, "eps": 1e-2}})
-    res = minimize(grid_bargin(df, M), custom_weights, method="COBYLA", tol= 1e-2, options={"disp":True}) # "eps": 1e-2
+    res = minimize(grid_bargin(df, M), custom_weights, method="COBYLA", tol= 1e-3, callback=callback, options={"disp":True}) # "eps": 1e-2
     print(res)
 
     store_params(dataset_folder, name, res["x"])

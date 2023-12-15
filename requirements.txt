@@ -7,3 +7,4 @@ cmake
 networkit
 pebble
 ssgetpy
+scikit-learn
