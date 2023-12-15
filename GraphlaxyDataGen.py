@@ -70,7 +70,7 @@ To run the full optimization in steps:
                             help = "The min and max vallue the edges argument can take.", default= (100000, 2000000))
         parser.add_argument('-m', '--multiprocess', action="store_true", help = "Add to take advantage of multiple cores.")
 
-        parser.add_argument('-w', "--custom-weights", nargs = 8, metavar = "float", type = float,
+        parser.add_argument('-w', "--custom-weights", nargs = 6, metavar = "float", type = float,
                             help = "List of waights for the beta distributions.", 
                             default= [1.7384663, 1.06355566, 0.73593356, 0.40087452, 0.93516664, 2.11534571])
 
@@ -120,7 +120,7 @@ To run the full optimization in steps:
         parser.add_argument('-p', "--plot-selection", nargs = '+', metavar = "str", type = str,
                             help = "Selects the plots to make. Posible values: {}".format(choices), default= default,
                             choices= choices)
-        parser.add_argument('-w', "--custom-weights", nargs = 8, metavar = "float", type = float,
+        parser.add_argument('-w', "--custom-weights", nargs = 6, metavar = "float", type = float,
                             help = "List of waights for the beta distributions.", 
                             default= ((1,1,1,1,1,1)))
         choices = ["custom", "initial"]
@@ -176,14 +176,16 @@ To run the full optimization in steps:
                             help = "Folder where the dataset is.", default= "../baseline_dataset")
         parser.add_argument('-g', "--grid-size", metavar = "int", type = int,
                             help = "The number of rows and columns the grid has.", default=15)
-        parser.add_argument('-w', "--custom-weights", nargs = 8, metavar = "float", type = float,
+        parser.add_argument('-p', "--precision", metavar = "int", type = int,
+                            help = "Precition on the metric space.", default=0.05)
+        parser.add_argument('-w', "--custom-weights", nargs = 6, metavar = "float", type = float,
                             help = "Initial weights for optimization.", 
                             default= [1]*6)
         
         args = parser.parse_args(sys.argv[3:])
 
         from processes.optimization import optimize
-        optimize(args.name, args.folder, args.grid_size, args.custom_weights)
+        optimize(args.name, args.folder, args.grid_size, args.precision, args.custom_weights)
 
 
 if __name__ == "__main__":

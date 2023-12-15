@@ -165,7 +165,7 @@ def plot(
             print("Generating weights...")
             #sample = gen_sample(df_b, weights, samples)
             m = 10
-            gen_param_grid(df_b)
+            gen_param_grid(df_b,0.05)
             gen_metric_grid(df_b, ["clustering", "density_log"], m)
             gen_weights(df_b, weights)
             df_b["weight_log"] = np.log10(df_b["weight"])
