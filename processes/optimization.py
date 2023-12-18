@@ -13,12 +13,13 @@ def store_params(dataset_folder, name, params, i = None, f = None):
   print("{}: {}".format(name, params))
 
   alfa_a,alfa_b, alfa_c, alfa_d, alfa_a_2, alfa_b_2, alfa_c_2, alfa_d_2, alfa_N, beta_N, selector = params
-  add_to_csv(Path(dataset_folder, "optimized_parameters.csv"),{
+  data = {
       'name': name, 'iteration': i,"selector": selector,
      'alfa_a': alfa_a, 'alfa_b': alfa_b,'alfa_c': alfa_c,'alfa_d': alfa_d,
-     'alfa_a_2': alfa_a_2, 'alfa_b': alfa_b_2,'alfa_c': alfa_c_2,'alfa_d': alfa_d_2,
+     'alfa_a_2': alfa_a_2, 'alfa_b_2': alfa_b_2,'alfa_c_2': alfa_c_2,'alfa_d_2': alfa_d_2,
       'alfa_N': alfa_N, 'beta_N': beta_N, 'f': f
-  })
+  }
+  add_to_csv(Path(dataset_folder, "optimized_parameters.csv"), data)
   
 def optimize(
         name = 'result',
@@ -45,7 +46,7 @@ def optimize(
       store_params(dataset_folder, name, x, i, grid_bargin(df, M)(x))
       i += 1
 
-    store_params(dataset_folder, name, custom_weights, None)
+    store_params(dataset_folder, name, custom_weights,0, grid_bargin(df, M)(custom_weights))
     res = minimize(grid_bargin(df, M), custom_weights, method="COBYLA", tol= 1e-3, options={"disp":True}) # "eps": 1e-2
     print(res)
 
