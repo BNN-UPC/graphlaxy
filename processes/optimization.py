@@ -12,10 +12,11 @@ def store_params(dataset_folder, name, params, i = None, f = None):
 
   print("{}: {}".format(name, params))
 
-  alfa_a,alfa_b, alfa_c, alfa_d, alfa_N, beta_N = params
+  alfa_a,alfa_b, alfa_c, alfa_d, alfa_a_2, alfa_b_2, alfa_c_2, alfa_d_2, alfa_N, beta_N, selector = params
   add_to_csv(Path(dataset_folder, "optimized_parameters.csv"),{
-      'name': name, 'iteration': i,
+      'name': name, 'iteration': i,"selector": selector,
      'alfa_a': alfa_a, 'alfa_b': alfa_b,'alfa_c': alfa_c,'alfa_d': alfa_d,
+     'alfa_a_2': alfa_a_2, 'alfa_b': alfa_b_2,'alfa_c': alfa_c_2,'alfa_d': alfa_d_2,
       'alfa_N': alfa_N, 'beta_N': beta_N, 'f': f
   })
   
@@ -41,20 +42,10 @@ def optimize(
     def callback(x):
       nonlocal i
       print(x)
-      store_params(dataset_folder, name, x, i,None)
+      store_params(dataset_folder, name, x, i, grid_bargin(df, M)(x))
       i += 1
 
-    if custom_weights == None:
-      f_min = 0
-      for i in range(100):
-        custom_weights_i = np.random.rand(6) * 5
-        f = grid_bargin(df, M)(custom_weights_i)
-        if f < f_min:
-          f_min = f
-          custom_weights  = custom_weights_i
-          print(custom_weights, f)
-
-    store_params(dataset_folder, name, custom_weights, 0)
+    store_params(dataset_folder, name, custom_weights, None)
     res = minimize(grid_bargin(df, M), custom_weights, method="COBYLA", tol= 1e-3, options={"disp":True}) # "eps": 1e-2
     print(res)
 

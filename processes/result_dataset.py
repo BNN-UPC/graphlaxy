@@ -28,7 +28,11 @@ def generate_result_dataset(
 
     print(params)
 
-    alfa_a, alfa_b, alfa_c, alfa_d, alfa_N, beta_N  = params
+    #alfa_a, alfa_b, alfa_c, alfa_d, alfa_N, beta_N  = params
+    alfa_a,alfa_b, alfa_c, alfa_d, \
+        alfa_a_2, alfa_b_2, alfa_c_2, alfa_d_2, \
+            alfa_N, beta_N, selector = params
+
 
 
 
@@ -41,7 +45,11 @@ def generate_result_dataset(
         n_0 = np.floor(np.sqrt(E * 20))
         N = beta_rvs_discrete_shifted(alfa_N, beta_N, n_0, E)
 
-        a,b,c,d = dirichlet.rvs((alfa_a, alfa_b ,alfa_c, alfa_d))[0]
+        if random.random() < selector:
+            a,b,c,d = dirichlet.rvs((alfa_a, alfa_b ,alfa_c, alfa_d))[0]
+        else:
+            a,b,c,d = dirichlet.rvs((alfa_a_2, alfa_b_2 ,alfa_c_2, alfa_d_2))[0]
+
 
         
         params = {
