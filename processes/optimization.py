@@ -12,10 +12,11 @@ def store_params(dataset_folder, name, params, i = None, f = None):
 
   print("{}: {}".format(name, params))
 
-  alfa_a,alfa_b, alfa_c, alfa_d, alfa_N, beta_N = params
+  alfa_a,alfa_b, alfa_c, alfa_d, alfa_a_2, alfa_b_2, alfa_c_2, alfa_d_2, alfa_N, beta_N, selector = params
   data = {
-      'name': name, 'iteration': i,
+      'name': name, 'iteration': i,"selector": selector,
      'alfa_a': alfa_a, 'alfa_b': alfa_b,'alfa_c': alfa_c,'alfa_d': alfa_d,
+     'alfa_a_2': alfa_a_2, 'alfa_b_2': alfa_b_2,'alfa_c_2': alfa_c_2,'alfa_d_2': alfa_d_2,
       'alfa_N': alfa_N, 'beta_N': beta_N, 'f': f
   }
   add_to_csv(Path(dataset_folder, "optimized_parameters.csv"), data)
