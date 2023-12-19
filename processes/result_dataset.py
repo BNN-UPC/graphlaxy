@@ -21,7 +21,9 @@ def generate_result_dataset(
     if from_file:
         df = pd.read_csv(param_file)
         params = df[df["name"] == name].iloc[-1][[
-                "alfa_a", "alfa_b", "alfa_c", "alfa_d", "alfa_N", "beta_N"
+                "alfa_a","alfa_b", "alfa_c", "alfa_d",
+                "alfa_a_2", "alfa_b_2", "alfa_c_2", "alfa_d_2",
+                "alfa_N", "beta_N", "selector"
             ]]
     else:
         params = custom_weights
