@@ -180,7 +180,7 @@ To run the full optimization in steps:
                             help = "Precition on the metric space.", default=0.05)
         parser.add_argument('-w', "--custom-weights", nargs = 6, metavar = "float", type = float,
                             help = "Initial weights for optimization.", 
-                            default= [1]*10 + [0.75])
+                            default= [1]*6)
         
         args = parser.parse_args(sys.argv[3:])
 

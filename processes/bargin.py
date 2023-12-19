@@ -73,23 +73,16 @@ def gen_param_grid(df, precision):
 
 def gen_weights(df, res):
     alfa_a,alfa_b, alfa_c, alfa_d, \
-        alfa_a_2, alfa_b_2, alfa_c_2, alfa_d_2, \
-            alfa_N, beta_N, selector = res
+            alfa_N, beta_N = res
     approx_cdf_trials = 100000
     gen = pd.DataFrame(dirichlet.rvs((alfa_a, alfa_b ,alfa_c, alfa_d), approx_cdf_trials), columns=['a','b','c','d'])
     gen2 = pd.DataFrame(dirichlet.rvs((alfa_a_2, alfa_b_2, alfa_c_2, alfa_d_2), approx_cdf_trials), columns=['a','b','c','d'])
 
-    weights = df.apply(lambda row: ((len(gen[gen['a'].between(row['a_bucket'].left,row['a_bucket'].right) & 
+    weights = df.apply(lambda row: (len(gen[gen['a'].between(row['a_bucket'].left,row['a_bucket'].right) & 
                                            gen['b'].between(row['b_bucket'].left,row['b_bucket'].right)& 
                                            gen['c'].between(row['c_bucket'].left,row['c_bucket'].right)& 
                                            gen['d'].between(row['d_bucket'].left,row['d_bucket'].right)
-                                           ].index) / approx_cdf_trials) * selector + 
-                                    ((len(gen2[gen2['a'].between(row['a_bucket'].left,row['a_bucket'].right) & 
-                                           gen2['b'].between(row['b_bucket'].left,row['b_bucket'].right)& 
-                                           gen2['c'].between(row['c_bucket'].left,row['c_bucket'].right)& 
-                                           gen2['d'].between(row['d_bucket'].left,row['d_bucket'].right)
-                                           ].index) / approx_cdf_trials) * (1-selector)
-                                           ))* 
+                                           ].index) / approx_cdf_trials)* 
         beta_cdf_interval(row['NE_bucket'],alfa_N, beta_N, (0, 1)) / row["param_bucket_count"], axis=1)
 
     weights[weights < 0] = 0
@@ -98,7 +91,7 @@ def gen_weights(df, res):
 def grid_bargin(df, ms):
 
     def _grid_bargin(params):
-        if any(x <= 0 for x in params) or params[-1] > 1:
+        if any(x <= 0 for x in params):
             return 1
         gen_weights(df, params)
         bargin = 0
