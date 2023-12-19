@@ -76,7 +76,6 @@ def gen_weights(df, res):
             alfa_N, beta_N = res
     approx_cdf_trials = 100000
     gen = pd.DataFrame(dirichlet.rvs((alfa_a, alfa_b ,alfa_c, alfa_d), approx_cdf_trials), columns=['a','b','c','d'])
-    gen2 = pd.DataFrame(dirichlet.rvs((alfa_a_2, alfa_b_2, alfa_c_2, alfa_d_2), approx_cdf_trials), columns=['a','b','c','d'])
 
     weights = df.apply(lambda row: (len(gen[gen['a'].between(row['a_bucket'].left,row['a_bucket'].right) & 
                                            gen['b'].between(row['b_bucket'].left,row['b_bucket'].right)& 

@@ -175,7 +175,7 @@ To run the full optimization in steps:
         parser.add_argument('-f', "--folder", metavar = "str", type = str,
                             help = "Folder where the dataset is.", default= "../baseline_dataset")
         parser.add_argument('-g', "--grid-size", nargs='+', metavar = "int", type = int,
-                            help = "The number of rows and columns the grid has.", default=[2,4,8])
+                            help = "The number of rows and columns the grid has.", default=[4,8])
         parser.add_argument('-p', "--precision", metavar = "float", type = float,
                             help = "Precition on the metric space.", default=0.05)
         parser.add_argument('-w', "--custom-weights", nargs = 6, metavar = "float", type = float,
