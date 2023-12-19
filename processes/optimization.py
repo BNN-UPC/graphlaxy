@@ -34,20 +34,19 @@ def optimize(
     df[df["density_log"] < -1]
 
 
-    m = grid_size
-    M = m * m
-    gen_metric_grid(df, ["clustering", "density_log"], m)
+    ms = grid_size
+    gen_metric_grid(df, ["clustering", "density_log"], ms)
     gen_param_grid(df, precision)
 
     i = 1
     def callback(x):
       nonlocal i
       print(x)
-      store_params(dataset_folder, name, x, i, grid_bargin(df, M)(x))
+      store_params(dataset_folder, name, x, i, grid_bargin(df, ms)(x))
       i += 1
 
-    store_params(dataset_folder, name, custom_weights,0, grid_bargin(df, M)(custom_weights))
-    res = minimize(grid_bargin(df, M), custom_weights, method="COBYLA", tol= 1e-3, options={"disp":True}) # "eps": 1e-2
+    store_params(dataset_folder, name, custom_weights,0, grid_bargin(df, ms)(custom_weights))
+    res = minimize(grid_bargin(df, ms), custom_weights, method="COBYLA", tol= 1e-3, options={"disp":True}) # "eps": 1e-2
     print(res)
 
     store_params(dataset_folder, name, res["x"])

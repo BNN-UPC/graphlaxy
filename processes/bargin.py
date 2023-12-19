@@ -13,14 +13,14 @@ def get_grid(m=10,
 
 
 
-def gen_metric_grid(df, metrics, m):
+def gen_metric_grid(df, metrics, ms):
     if len(metrics) != 2:
         raise NotImplementedError("Only implemented 2D Grid. Please send only one pair of metrics.")
 
-    blocks = get_grid(m)
-
-    df["metric_bucket_1"] = pd.cut(df[metrics[0]], blocks[0], labels=list(range(m)), include_lowest =True)
-    df["metric_bucket_2"] = pd.cut(df[metrics[1]], blocks[1], labels=list(range(m)), include_lowest =True)
+    for m in ms:
+        blocks = get_grid(m)
+        df[f"metric_bucket_1_{m}"] = pd.cut(df[metrics[0]], blocks[0], labels=list(range(m)), include_lowest =True)
+        df[f"metric_bucket_2_{m}"] = pd.cut(df[metrics[1]], blocks[1], labels=list(range(m)), include_lowest =True)
 
 def interval_b(a):
     return (max(0,1-3*a), min(a, 1-a))
@@ -95,22 +95,22 @@ def gen_weights(df, res):
     weights[weights < 0] = 0
     df["weight"] = weights
 
-def grid_bargin(df, M):
+def grid_bargin(df, ms):
 
     def _grid_bargin(params):
         if any(x <= 0 for x in params) or params[-1] > 1:
             return 1
-
         gen_weights(df, params)
-
-        total = df["weight"].sum()
-        buckets = df[(df["metric_bucket_1"] != np.NaN)  & (df["metric_bucket_2"] != np.NaN)].groupby(["metric_bucket_1", "metric_bucket_2"])
-        bucket_prob = buckets["weight"].sum() / total
-
-
-        bargin = - sum(np.log2( 1 + (M-1) * bucket_prob)) / M
-        print(params, bargin)
-        return bargin
-    
+        bargin = 0
+        for m in ms:
+            M = m*m
+            total = df["weight"].sum()
+            buckets = df[(df[f"metric_bucket_1_{m}"] != np.NaN)  & (df[f"metric_bucket_2_{m}"] != np.NaN)].groupby(
+                        [f"metric_bucket_1_{m}", f"metric_bucket_2_{m}"])
+            bucket_prob = buckets["weight"].sum() / total
+            bargin_m = - sum(np.log2( 1 + (M-1) * bucket_prob)) / M
+            print(params,m,bargin_m)
+            bargin += bargin_m
+        return bargin / len(ms)
     return _grid_bargin
 
