@@ -34,7 +34,7 @@ def generate_baseline(
         from pebble import ProcessPool
         from utils.multiprocess import pebble_timeout_callback
 
-        with ProcessPool() as pool:
+        with ProcessPool(max_workers=15) as pool:
             for param in parameters:
                 future = pool.schedule(rmat_to_file, 
                     args=(param['N'],param['E'],param['a'],param['b'],param['c'],param['d'],dataset_folder, param['i']), 

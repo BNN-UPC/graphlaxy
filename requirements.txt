@@ -8,3 +8,4 @@ networkit
 pebble
 ssgetpy
 scikit-learn
+powerlaw

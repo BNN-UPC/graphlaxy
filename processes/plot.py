@@ -41,7 +41,7 @@ def plot_paramdensity(res, s):
 
 def plot_clustering_density(df):
     plt.figure()
-    plt.hist(df["clustering"], bins=20, density=True)
+    plt.hist(df["clustering"], bins=np.linspace(0,1,10), density=True)
     index = (0,1)
     plt.plot(index, uniform.pdf(index), label='Uniform')
     plt.ylim(0,10)
