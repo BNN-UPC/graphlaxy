@@ -16,10 +16,6 @@ import multiprocessing as mp
 lock = mp.Lock()
 
 def _metrics(dataset_folder, row, trials):
-    a = row['a']
-    b = row['b']
-    c = row['c']
-    d = 1 - a - b - c
     
     G = read_graph(Path(dataset_folder,"graphs", row['name']))
     #Gcc = max(nx.connected_components(G), key=len)

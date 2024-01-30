@@ -5,7 +5,7 @@ from scipy.stats import dirichlet
 from utils.probability import beta_cdf_interval, beta_cdf_mean, beta_cdf_mean_2d
 
 def get_grid(m=10,
-        limits = [(0,1),(-6,-1)]):
+        limits = [(0,1),(0,3)]): # ,(-6,-1)
     
     block0 = np.linspace(limits[0][0], limits[0][1], m + 1)
     block1 = np.linspace(limits[1][0], limits[1][1], m + 1)
@@ -21,44 +21,6 @@ def gen_metric_grid(df, metrics, ms):
         blocks = get_grid(m)
         df[f"metric_bucket_1_{m}"] = pd.cut(df[metrics[0]], blocks[0], labels=list(range(m)), include_lowest =True)
         df[f"metric_bucket_2_{m}"] = pd.cut(df[metrics[1]], blocks[1], labels=list(range(m)), include_lowest =True)
-
-def interval_b(a):
-    return (max(0,1-3*a), min(a, 1-a))
-
-def interval_c(a,b):
-    return (max(0,1-2*a-b), min(a, 1-a-b))
-
-
-def interval_c_mean(a, b):
-    a_maen = (a.right + a.left) /2
-    b_mean = (b.right + b.left) /2
-    return interval_c(a_maen, b_mean)
-
-def interval_c_leftleft(a,b):
-    return interval_c(a.left, b.left)
-    
-def interval_c_leftright(a,b):
-    return interval_c(a.left, b.right)
-
-    
-def interval_c_rightleft(a,b):
-    return interval_c(a.right, b.left)
-
-    
-def interval_c_rightright(a,b):
-    return interval_c(a.right, b.right)
-
-def interval_b_mean(a):
-    a_maen = (a.right + a.left) /2
-    return interval_b(a_maen)
-    
-
-def interval_b_left(a):
-    return interval_b(a.left)
-    
-def interval_b_right(a):
-    return interval_b(a.right)
-    
 
 def gen_param_grid(df, precision):
     intervals = np.arange(0,1.001,precision)

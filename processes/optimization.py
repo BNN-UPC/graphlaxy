@@ -30,11 +30,12 @@ def optimize(
     df_m = pd.read_csv(Path(dataset_folder, "dataset_metrics.csv"))
     df_d = pd.read_csv(Path(dataset_folder, "dataset_description.csv"))
     df = pd.merge(df_m, df_d, on="name")
+    df["slope_log"] = np.log10(df["degree_pl_slope"])
     df[df["density_log"] < -1]
 
 
     ms = grid_size
-    gen_metric_grid(df, ["clustering", "density_log"], ms)
+    gen_metric_grid(df, ["clustering", "slope_log"], ms)
     gen_param_grid(df, precision)
 
     i = 1
