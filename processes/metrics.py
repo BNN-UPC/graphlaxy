@@ -31,6 +31,13 @@ def _metrics(dataset_folder, row, trials):
 
     fit = pwl.Fit(degree_sequence)
     degree_pl_slope = fit.power_law.alpha
+    if degree_pl_slope is None or degree_pl_slope == np.nan:
+        degree_slope_inverse = 0
+    if degree_pl_slope < 1:
+        degree_slope_inverse = 1
+    else:
+        degree_slope_inverse = 1 / degree_pl_slope
+
 
     with lock:
         add_to_csv(Path(dataset_folder, "dataset_metrics.csv"), {
@@ -39,7 +46,8 @@ def _metrics(dataset_folder, row, trials):
             "max_degree": max_degree,
             'density_log': np.log10(density),
             'clustering':  clustering,
-            'degree_pl_slope': degree_pl_slope
+            'degree_pl_slope': degree_pl_slope,
+            'degree_slope_inverse': degree_slope_inverse
         })
     return row['name']
 
