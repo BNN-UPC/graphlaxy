@@ -19,9 +19,9 @@
 #python GraphlaxyDataGen.py statistics -f ../parameter_tunning_result_datasets/grid16
 #python GraphlaxyDataGen.py statistics -f ../parameter_tunning_result_datasets/grid32
 
-python GraphlaxyDataGen.py generate -f ../parameter_tunning_result_datasets/inv_slope_grid12 -F -n inv_slope_grid12 -s 10000 -p ../baseline2/optimized_parameters.csv -m
-python GraphlaxyDataGen.py optimization metrics -f ../parameter_tunning_result_datasets/inv_slope_grid12 -m
-python GraphlaxyDataGen.py statistics -f ../parameter_tunning_result_datasets/inv_slope_grid12
+#python GraphlaxyDataGen.py generate -f ../parameter_tunning_result_datasets/big_inv_slope -F -n inv_slope_grid12 -s 10000 -p ../baseline2/optimized_parameters.csv -m
+python GraphlaxyDataGen.py optimization metrics -f ../parameter_tunning_result_datasets/big_inv_slope -m
+python GraphlaxyDataGen.py statistics -f ../parameter_tunning_result_datasets/big_inv_slope
 
 exit
 #python GraphlaxyDataGen.py optimization optimize -n grid2_v5 -g 2 &
