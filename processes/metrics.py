@@ -24,6 +24,7 @@ def _metrics(dataset_folder, row, trials):
     density = nx.density(G)
     clustering = nx.algorithms.approximation.clustering_coefficient.average_clustering(G,trials)
     max_degree =  max([x[1] for x in nx.degree(G)])
+    mean_degree =  max([x[1] for x in nx.degree(G)])
 
     degree_sequence = sorted([d for n, d in G.degree()]) # used for degree distribution and powerlaw test
     degree_hist = np.unique(degree_sequence, return_counts=True)
@@ -38,12 +39,14 @@ def _metrics(dataset_folder, row, trials):
     else:
         degree_slope_inverse = 1 / degree_pl_slope
 
-
     with lock:
         add_to_csv(Path(dataset_folder, "dataset_metrics.csv"), {
             'name': row['name'], 'nodes': G.number_of_nodes(), 'edges': G.number_of_edges(),
             'density': density,
             "max_degree": max_degree,
+            "mean_degree": mean_degree,
+            "max_clique": len(nx.approximation.max_clique(G)),
+            "diameter": nx.approximation.diameter(G.subgraph(sorted(nx.connected_components(G), key=len, reverse=True)[0])),
             'density_log': np.log10(density),
             'clustering':  clustering,
             'degree_pl_slope': degree_pl_slope,

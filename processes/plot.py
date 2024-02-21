@@ -13,7 +13,7 @@ from .bargin import gen_param_grid, gen_weights, gen_metric_grid, grid_bargin, g
 
 
 def annotate_df(row, ax):
-    ax.annotate(row["name"], row[["density_log","clustering"]],
+    ax.annotate(row["name"], row[["degree_slope_inverse","clustering"]],
         xytext=(3, -2), 
         textcoords='offset points',
         size=12, 
@@ -52,12 +52,11 @@ def plot_clustering_density(df):
 
 def plot_dlog_density(df):
     plt.figure()
-    plt.hist(df["density_log"], bins=20, density=True)
+    plt.hist(df["degree_slope_inverse"], bins=20, density=True)
     index = (-5.5,0)
     plt.plot(index, uniform.pdf(index, loc=-5.5, scale =5.5), label='Uniform')
-    plt.ylim(0,0.5)
     plt.legend()
-    plt.xlabel("Dlog")
+    plt.xlabel("degree slope inverse")
     plt.ylabel("denisty")
 
 def plot_sample_paramdist(res):
@@ -74,7 +73,7 @@ def plot_sample_paramdist(res):
 
 
 def plot_sample_grid(df):
-    ax= df.plot.scatter("density_log","clustering", c="weight_log", colormap='magma')
+    ax= df.plot.scatter("degree_slope_inverse","clustering", c="weight_log", colormap='magma')
     grid = get_grid()
     for c in grid[0]:
         ax.plot([-5.5, 0], [c, c], color = 'green', linestyle = '--', linewidth = 0.5)
@@ -113,15 +112,14 @@ def plot_fitness_evolution(df, M, params, name):
 
     
 def plot_param_dlog(df):
-    df.plot.scatter("NE","diff", c="density_log", colormap='magma')
+    df.plot.scatter("NE","diff", c="degree_slope_inverse", colormap='magma')
     plt.xlabel("N / E")
     plt.ylabel("a - d")
 
 def plot_validation(df, df_val):
-    ax = df.plot.scatter("density_log","clustering", c="gray")
-    df_val.plot.scatter("density_log","clustering", ax = ax)
-    plt.xlabel("Dlog")
-    plt.xlim(-6,0.01)
+    ax = df.plot.scatter("degree_slope_inverse","clustering", c="gray")
+    df_val.plot.scatter("degree_slope_inverse","clustering", ax = ax)
+    plt.xlim(0,0.75)
     plt.ylim(-0.01,1.01)
     df_val.apply(lambda row: annotate_df(row,ax), axis=1)
 
@@ -166,7 +164,7 @@ def plot(
             #sample = gen_sample(df_b, weights, samples)
             m = 10
             gen_param_grid(df_b,0.05)
-            gen_metric_grid(df_b, ["clustering", "density_log"], m)
+            gen_metric_grid(df_b, ["clustering", "degree_slope_inverse"], m)
             gen_weights(df_b, weights)
             df_b["weight_log"] = np.log10(df_b["weight"])
             
