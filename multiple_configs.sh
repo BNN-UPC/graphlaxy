@@ -19,22 +19,31 @@
 #python GraphlaxyDataGen.py statistics -f ../parameter_tunning_result_datasets/grid16
 #python GraphlaxyDataGen.py statistics -f ../parameter_tunning_result_datasets/grid32
 
+python GraphlaxyDataGen.py generate -f ../parameter_tunning_result_datasets/inv_slope_grid12 -F -n inv_slope_grid12 -s 10000 -p ../baseline2/optimized_parameters.csv -m
+python GraphlaxyDataGen.py optimization metrics -f ../parameter_tunning_result_datasets/inv_slope_grid12 -m
+python GraphlaxyDataGen.py statistics -f ../parameter_tunning_result_datasets/inv_slope_grid12
+
+exit
 #python GraphlaxyDataGen.py optimization optimize -n grid2_v5 -g 2 &
-python GraphlaxyDataGen.py optimization optimize -n slope_grid10 -g 10 -f ../baseline2 &
-python GraphlaxyDataGen.py optimization optimize -n slope_grid12 -g 12 -f ../baseline2 &
-python GraphlaxyDataGen.py optimization optimize -n slope_grid14 -g 14  -f ../baseline2 &
+python GraphlaxyDataGen.py optimization optimize -n inv_slope_grid4 -g 4 -f ../baseline2 &
+python GraphlaxyDataGen.py optimization optimize -n inv_slope_grid14 -g 14 -f ../baseline2 &
+python GraphlaxyDataGen.py optimization optimize -n inv_slope_grid16 -g 16 -f ../baseline2 &
+python GraphlaxyDataGen.py optimization optimize -n inv_slope_grid18 -g 18 -f ../baseline2 &
 #python GraphlaxyDataGen.py optimization optimize -n grid10_v5 -g 10 &
 #python GraphlaxyDataGen.py optimization optimize -n grid12_v5 -g 12 &
 wait
-python GraphlaxyDataGen.py generate -f ../parameter_tunning_result_datasets/slope_grid10 -F -n slope_grid10 -s 1000 -p ../baseline2/optimized_parameters.csv -m
-python GraphlaxyDataGen.py optimization metrics -f ../parameter_tunning_result_datasets/slope_grid10 -m
-python GraphlaxyDataGen.py statistics -f ../parameter_tunning_result_datasets/slope_grid10
-python GraphlaxyDataGen.py generate -f ../parameter_tunning_result_datasets/slope_grid12 -F -n slope_grid12 -s 1000 -p ../baseline2/optimized_parameters.csv -m
-python GraphlaxyDataGen.py optimization metrics -f ../parameter_tunning_result_datasets/slope_grid12 -m
-python GraphlaxyDataGen.py statistics -f ../parameter_tunning_result_datasets/slope_grid12
-python GraphlaxyDataGen.py generate -f ../parameter_tunning_result_datasets/slope_grid14 -F -n slope_grid14 -s 1000 -p ../baseline2/optimized_parameters.csv -m
-python GraphlaxyDataGen.py optimization metrics -f ../parameter_tunning_result_datasets/slope_grid14 -m
-python GraphlaxyDataGen.py statistics -f ../parameter_tunning_result_datasets/slope_grid14
+python GraphlaxyDataGen.py generate -f ../parameter_tunning_result_datasets/inv_slope_grid4 -F -n inv_slope_grid4 -s 1000 -p ../baseline2/optimized_parameters.csv -m
+python GraphlaxyDataGen.py optimization metrics -f ../parameter_tunning_result_datasets/inv_slope_grid4 -m
+python GraphlaxyDataGen.py statistics -f ../parameter_tunning_result_datasets/inv_slope_grid4
+python GraphlaxyDataGen.py generate -f ../parameter_tunning_result_datasets/inv_slope_grid14 -F -n inv_slope_grid14 -s 1000 -p ../baseline2/optimized_parameters.csv -m
+python GraphlaxyDataGen.py optimization metrics -f ../parameter_tunning_result_datasets/inv_slope_grid14 -m
+python GraphlaxyDataGen.py statistics -f ../parameter_tunning_result_datasets/inv_slope_grid14
+python GraphlaxyDataGen.py generate -f ../parameter_tunning_result_datasets/inv_slope_grid16 -F -n inv_slope_grid16 -s 1000 -p ../baseline2/optimized_parameters.csv -m
+python GraphlaxyDataGen.py optimization metrics -f ../parameter_tunning_result_datasets/inv_slope_grid16 -m
+python GraphlaxyDataGen.py statistics -f ../parameter_tunning_result_datasets/inv_slope_grid16
+python GraphlaxyDataGen.py generate -f ../parameter_tunning_result_datasets/inv_slope_grid18 -F -n inv_slope_grid18 -s 1000 -p ../baseline2/optimized_parameters.csv -m
+python GraphlaxyDataGen.py optimization metrics -f ../parameter_tunning_result_datasets/inv_slope_grid18 -m
+python GraphlaxyDataGen.py statistics -f ../parameter_tunning_result_datasets/inv_slope_grid18
 #python GraphlaxyDataGen.py generate -f ../parameter_tunning_result_datasets/grid4_v5 -F -n grid4_v5 -s 1000 -m
 #python GraphlaxyDataGen.py optimization metrics -f ../parameter_tunning_result_datasets/grid4_v5 -m
 #python GraphlaxyDataGen.py statistics -f ../parameter_tunning_result_datasets/grid4_v5

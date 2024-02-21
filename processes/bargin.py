@@ -5,7 +5,7 @@ from scipy.stats import dirichlet
 from utils.probability import beta_cdf_interval, beta_cdf_mean, beta_cdf_mean_2d
 
 def get_grid(m=10,
-        limits = [(0,1),(0,3)]): # ,(-6,-1)
+        limits = [(0,1),(0,0.75)]): # ,(-6,-1)
     
     block0 = np.linspace(limits[0][0], limits[0][1], m + 1)
     block1 = np.linspace(limits[1][0], limits[1][1], m + 1)
