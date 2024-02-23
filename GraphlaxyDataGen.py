@@ -72,7 +72,7 @@ To run the full optimization in steps:
 
         parser.add_argument('-w', "--custom-weights", nargs = 6, metavar = "float", type = float,
                             help = "List of waights for the beta distributions.", 
-                            default= [1.7384663, 1.06355566, 0.73593356, 0.40087452, 0.93516664, 2.11534571])
+                            default= [2.473828998367313,0.8392523785309522,0.5058416664822544,0.23394588882493786,0.28724838342218206,2.5188610470866606])
 
 
         
