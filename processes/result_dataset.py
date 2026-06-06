@@ -6,6 +6,8 @@ import pandas as pd
 from utils.rmat import rmat_to_file
 from utils.probability import beta_rvs_shifted, beta_rvs_discrete_shifted
 
+from scipy.stats import dirichlet
+
 def generate_result_dataset(
     from_file = True,
     custom_weights = [1] *8,
@@ -19,16 +21,15 @@ def generate_result_dataset(
     if from_file:
         df = pd.read_csv(param_file)
         params = df[df["name"] == name].iloc[-1][[
-                "alfa_a", "beta_a", "alfa_b", "beta_b", "alfa_c", "beta_c", "alfa_N", "beta_N"
+                "alfa_a","alfa_b", "alfa_c", "alfa_d",
+                "alfa_N", "beta_N"
             ]]
     else:
         params = custom_weights
 
     print(params)
 
-    alfa_a, beta_a, alfa_b, beta_b, alfa_c, beta_c, alfa_N, beta_N  = params
-
-
+    alfa_a, alfa_b, alfa_c, alfa_d, alfa_N, beta_N  = params
 
     Path(dataset_folder,'graphs').mkdir(parents=True, exist_ok=True)
 
@@ -39,10 +40,8 @@ def generate_result_dataset(
         n_0 = np.floor(np.sqrt(E * 20))
         N = beta_rvs_discrete_shifted(alfa_N, beta_N, n_0, E)
 
-        a = beta_rvs_shifted(alfa_a, beta_a, 1/4, 1)
-        b = beta_rvs_shifted(alfa_b, beta_b, max(0,1-3*a), min(a, 1-a))
-        c = beta_rvs_shifted(alfa_c, beta_c, max(0,1-2*a-b), min(a, 1-a-b))
-        d = 1 - a - b - c
+        a,b,c,d = dirichlet.rvs((alfa_a, alfa_b ,alfa_c, alfa_d))[0]
+
 
         
         params = {

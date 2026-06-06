@@ -65,14 +65,14 @@ To run the full optimization in steps:
         parser.add_argument('-f', "--folder", metavar = "str", type = str,
                             help = "Folder where to generate the dataset.", default= "../result_dataset")
         parser.add_argument('-s', "--dataset-size", metavar = "int", type = int,
-                            help = "The size of the dataset to generate.", default= 5000)
+                            help = "The size of the dataset to generate.", default= 100)
         parser.add_argument('-e', "--edges-between", nargs = 2, metavar = "int", type = int,
                             help = "The min and max vallue the edges argument can take.", default= (100000, 2000000))
         parser.add_argument('-m', '--multiprocess', action="store_true", help = "Add to take advantage of multiple cores.")
 
-        parser.add_argument('-w', "--custom-weights", nargs = 8, metavar = "float", type = float,
+        parser.add_argument('-w', "--custom-weights", nargs = 6, metavar = "float", type = float,
                             help = "List of waights for the beta distributions.", 
-                            default= [1.3500523980958758,0.9756729865636893,1.4562248430720026,0.22767153268062393,1.055699069458428,0.9060404341929743,0.35052426603213255,1.157122011830607])
+                            default= [2.473828998367313,0.8392523785309522,0.5058416664822544,0.23394588882493786,0.28724838342218206,2.5188610470866606])
 
 
         
@@ -120,9 +120,9 @@ To run the full optimization in steps:
         parser.add_argument('-p', "--plot-selection", nargs = '+', metavar = "str", type = str,
                             help = "Selects the plots to make. Posible values: {}".format(choices), default= default,
                             choices= choices)
-        parser.add_argument('-w', "--custom-weights", nargs = 8, metavar = "float", type = float,
+        parser.add_argument('-w', "--custom-weights", nargs = 6, metavar = "float", type = float,
                             help = "List of waights for the beta distributions.", 
-                            default= ((1,1,1,1,1,1,1,1)))
+                            default= ((1,1,1,1,1,1)))
         choices = ["custom", "initial"]
         parser.add_argument('-ws', "--weight-source", metavar = "str", type = str,
                             help = "Where to get the waights used for the plot from. Posible values: {}".format(choices), default= "custom",
@@ -174,16 +174,18 @@ To run the full optimization in steps:
                             help = "An id for the result.", default= "result")
         parser.add_argument('-f', "--folder", metavar = "str", type = str,
                             help = "Folder where the dataset is.", default= "../baseline_dataset")
-        parser.add_argument('-g', "--grid-size", metavar = "int", type = int,
-                            help = "The number of rows and columns the grid has.", default=15)
-        parser.add_argument('-w', "--custom-weights", nargs = 8, metavar = "float", type = float,
+        parser.add_argument('-g', "--grid-size", nargs='+', metavar = "int", type = int,
+                            help = "The number of rows and columns the grid has.", default=[4,8])
+        parser.add_argument('-p', "--precision", metavar = "float", type = float,
+                            help = "Precition on the metric space.", default=0.05)
+        parser.add_argument('-w', "--custom-weights", nargs = 6, metavar = "float", type = float,
                             help = "Initial weights for optimization.", 
-                            default= [1.3500523980958758,0.9756729865636893,1.4562248430720026,0.22767153268062393,1.055699069458428,0.9060404341929743,0.35052426603213255,1.157122011830607])
+                            default= [1]*6)
         
         args = parser.parse_args(sys.argv[3:])
 
         from processes.optimization import optimize
-        optimize(args.name, args.folder, args.grid_size, args.custom_weights)
+        optimize(args.name, args.folder, args.grid_size, args.precision, args.custom_weights)
 
 
 if __name__ == "__main__":
